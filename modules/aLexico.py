@@ -160,7 +160,7 @@ class Analizador:
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x_3(cadena)
-        elif char in ['"', "\n", "\t", " ", ",", "}", "{", "="]:
+        elif char in ['"', "\n", "\t", " ", ",", "}", "{", "=", "("]:
             token_type = None
             for pat, tipo in self.patrones:
                 if pat == self.buffer:
@@ -190,7 +190,7 @@ class Analizador:
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x_6(cadena)
-        elif char in ['"', "\n", "\t", " ", ",", "}"]:
+        elif char in ['"', "\n", "\t", " ", ",", "}", ")"]:
             try:
                 self.agregar_token_sin_c(TipoToken.ENTERO, self.buffer)
                 self.estado = 1
@@ -326,6 +326,13 @@ class Analizador:
 
     def imprimir(self):
         for i, dato in enumerate(self.tokens):
+            valor = dato.valor
+            tipo = dato.tipo
+            fila = dato.fila
+            columna = dato.columna
+            print(valor, tipo, fila, columna)
+        print("----")
+        for i, dato in enumerate(self.errores):
             valor = dato.valor
             tipo = dato.tipo
             fila = dato.fila
