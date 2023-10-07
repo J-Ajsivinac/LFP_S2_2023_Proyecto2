@@ -192,7 +192,7 @@ class Analizador:
             cadena = self.x_6(cadena)
         elif char in ['"', "\n", "\t", " ", ",", "}", ")"]:
             try:
-                self.agregar_token_sin_c(TipoToken.ENTERO, self.buffer)
+                self.agregar_token(TipoToken.ENTERO, self.buffer)
                 self.estado = 1
                 self.buffer = ""
             except Exception as _:
@@ -225,7 +225,7 @@ class Analizador:
             cadena = self.x_7(cadena)
         elif char in ['"', "\n", "\t", " ", ",", "}"]:
             try:
-                self.agregar_token_sin_c(TipoToken.REAL, self.buffer)
+                self.agregar_token(TipoToken.REAL, self.buffer)
                 self.buffer = ""
             except Exception as _:
                 self.buffer = ""
@@ -258,13 +258,11 @@ class Analizador:
         if char == '"':
             self.buffer += char
             cadena = cadena[1:]
-            self.agregar_token_sin_c(TipoToken.STRING, self.buffer)
+            self.agregar_token(TipoToken.STRING, self.buffer)
             self.buffer = ""
-            self.estado = 1
         else:
             cadena = cadena[1:]
             self.buffer += char
-            self.columna += 1
             cadena = self.x_9(cadena)
 
         return cadena
@@ -273,7 +271,6 @@ class Analizador:
         char = cadena[0]
         if char == '"':
             self.buffer += char
-            self.columna += 1
             cadena = cadena[1:]
             cadena = self.x_12(cadena)
         else:
@@ -287,12 +284,12 @@ class Analizador:
         if char == '"':
             self.buffer += char
             cadena = cadena[1:]
-            self.columna += 1
             cadena = self.x_13(cadena)
         else:
+            if char == "\n":
+                self.fila += 1
             cadena = cadena[1:]
             self.buffer += char
-            self.columna += 1
             cadena = self.x_12(cadena)
         return cadena
 
@@ -301,7 +298,6 @@ class Analizador:
         if char == '"':
             self.buffer += char
             cadena = cadena[1:]
-            self.columna += 1
             cadena = self.x_14(cadena)
         else:
             self.crear_error(char, self.fila, self.columna)
@@ -314,9 +310,7 @@ class Analizador:
         if char == '"':
             self.buffer += char
             cadena = cadena[1:]
-            self.columna += 1
-            self.agregar_token_sin_c(TipoToken.COMENTARIO_M, self.buffer)
-            self.estado = 1
+            self.agregar_token(TipoToken.COMENTARIO_M, self.buffer)
             self.buffer = ""
         else:
             self.crear_error(char, self.fila, self.columna)
