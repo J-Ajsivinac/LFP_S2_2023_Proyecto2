@@ -31,4 +31,5 @@ class TipoToken(Enum):
     COMILLAS_SIMPLES = 27
     COMILLAS_SIMPLES_TR = 28
     STRING = 29
-    NUMERO = 30
+    ENTERO = 30
+    REAL = 31

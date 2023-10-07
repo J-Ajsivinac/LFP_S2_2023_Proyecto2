@@ -11,9 +11,10 @@ with open(
     "r",
 ) as json_file:
     text = json_file.read()
-    analizado = Analizador()
-    analizado.analizar(text)
-    analizado.imprimir()
+
+analizado = Analizador()
+analizado.analizar(text)
+analizado.imprimir()
 
 
 class App(tk.Tk):
