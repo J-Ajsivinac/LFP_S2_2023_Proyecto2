@@ -2,19 +2,24 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import sv_ttk
 from modules.lectura import cargar_json
-from modules.aLexico import Analizador
+from modules.aLexico import AnalizadorLexico
+from modules.aSintactico import AnalizadorSintactico
 
 # C:\Users\mesoi\Downloads
 text = ""
 with open(
-    "C:\\Users\\mesoi\\Downloads\\prueba2.bizdata",
+    "C:\\Users\\mesoi\\Downloads\\Archivo de prueba basico.txt",
     "r",
 ) as json_file:
     text = json_file.read()
 
-analizado = Analizador()
+analizado = AnalizadorLexico()
 analizado.analizar(text)
+lista = analizado.regresar_tokens()
 analizado.imprimir()
+# sintactico = AnalizadorSintactico(lista)
+# sintactico.parser()
+# sintactico.imprimir()
 
 
 class App(tk.Tk):

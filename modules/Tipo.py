@@ -33,3 +33,4 @@ class TipoToken(Enum):
     STRING = 29
     ENTERO = 30
     REAL = 31
+    TEXT = 32
