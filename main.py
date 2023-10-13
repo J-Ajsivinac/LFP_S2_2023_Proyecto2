@@ -6,23 +6,9 @@ from modules.aLexico import AnalizadorLexico
 from modules.aSintactico import AnalizadorSintactico
 from modules.control import Control
 from modules import lectura
+from img.icons import Imagenes
+from PIL import Image, ImageTk
 import os
-
-# C:\Users\mesoi\Downloads
-# text = ""
-# with open(
-#     "C:\\Users\\mesoi\\Downloads\\Archivo de prueba basico.txt",
-#     "r",
-# ) as json_file:
-#     text = json_file.read()
-
-# analizado = AnalizadorLexico()
-# analizado.analizar(text)
-# lista = analizado.regresar_tokens()
-# analizado.imprimir()
-# sintactico = AnalizadorSintactico(lista)
-# sintactico.parser()
-# sintactico.imprimir()
 
 
 class App(tk.Tk):
@@ -126,12 +112,16 @@ class Contendio(ttk.Frame):
             background="#34384f",
             font=("Montserrat SemiBold", 11),
         )
-
+        img_1 = Image.open(Imagenes.BTN_PLAY)
+        img_1 = img_1.resize((21, 21), Image.LANCZOS)
+        self.img_play = ImageTk.PhotoImage(img_1)
         btn_ejecutar = ttk.Button(
             panel_izq_sup,
-            text="Ejecutar",
-            width=7,
+            image=self.img_play,
+            compound="left",
+            text="",
             style="Accent.TButton",
+            width=3,
             command=self.analizar_datos,
         )
 
@@ -184,6 +174,7 @@ class Contendio(ttk.Frame):
             wrap="none",
             yscrollcommand=vscrollbar.set,
             xscrollcommand=hscrollbar.set,
+            state="disabled",
         )
         hscrollbar.config(command=self.text_consola.xview)
         hscrollbar.pack(side=tk.BOTTOM, fill=tk.X)
@@ -219,10 +210,12 @@ class Contendio(ttk.Frame):
         analizado.analizar(texto)
         lista = analizado.regresar_tokens()
         # analizado.imprimir()
+        self.text_consola.config(state="normal")
         sintactico = AnalizadorSintactico(lista, self.controlador)
         sintactico.parser()
         # sintactico.imprimir()
         self.text_consola.insert(tk.END, "\n  \n")
+        self.text_consola.config(state="disabled")
 
 
 if __name__ == "__main__":
