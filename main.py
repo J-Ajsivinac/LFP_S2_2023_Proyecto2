@@ -29,7 +29,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Ventana Principal")
-        self.geometry("1070x668")
+        self.geometry("1080x668")
         self.resizable(0, 0)
 
         sv_ttk.set_theme("dark")
@@ -99,8 +99,8 @@ class Contendio(ttk.Frame):
         panel_medio = tk.Frame()
         panel_medio.pack(padx=20, pady=10, fill="both", expand=True)
         panel_medio.configure(bg="#080b0f")
-        panel_medio.columnconfigure(0, weight=2, pad=700)
-        panel_medio.columnconfigure(1, weight=1, minsize=320)
+        panel_medio.columnconfigure(0, weight=2, pad=650)
+        panel_medio.columnconfigure(1, weight=1, minsize=360)
         panel_medio.rowconfigure(0, weight=1)
 
         panel_izq = tk.Frame(panel_medio)
@@ -132,6 +132,7 @@ class Contendio(ttk.Frame):
             text="Ejecutar",
             width=7,
             style="Accent.TButton",
+            command=self.analizar_datos,
         )
 
         self.lbl_nombre.grid(row=0, column=0)
@@ -208,6 +209,20 @@ class Contendio(ttk.Frame):
             _, nombre = os.path.split(self.archivo_actual)
             self.lbl_nombre.config(text=nombre)
             # self.actualizar_contador()
+
+    def analizar_datos(self):
+        texto = self.text_code.get("1.0", "end")
+        if not texto.strip():
+            messagebox.showerror(message="No hay información cargada", title="Error")
+            return
+        analizado = AnalizadorLexico()
+        analizado.analizar(texto)
+        lista = analizado.regresar_tokens()
+        # analizado.imprimir()
+        sintactico = AnalizadorSintactico(lista, self.controlador)
+        sintactico.parser()
+        # sintactico.imprimir()
+        self.text_consola.insert(tk.END, "\n  \n")
 
 
 if __name__ == "__main__":

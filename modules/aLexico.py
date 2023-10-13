@@ -206,13 +206,12 @@ class AnalizadorLexico:
             cadena = self.x_6(cadena)
         elif char in ['"', "\n", "\t", " ", ",", "}", ")"]:
             try:
-                self.agregar_token(TipoToken.ENTERO, self.buffer)
+                self.agregar_token(TipoToken.ENTERO, int(self.buffer))
                 self.estado = 1
                 self.buffer = ""
             except Exception as _:
                 self.estado = 1
                 self.buffer = ""
-                print(" ")
         else:
             self.crear_error(char, self.fila, self.columna)
             cadena = cadena[1:]
@@ -239,12 +238,11 @@ class AnalizadorLexico:
             cadena = self.x_7(cadena)
         elif char in ['"', "\n", "\t", " ", ",", "}"]:
             try:
-                self.agregar_token(TipoToken.REAL, self.buffer)
+                self.agregar_token(TipoToken.REAL, float(self.buffer))
                 self.buffer = ""
             except Exception as _:
                 self.buffer = ""
                 self.estado = 1
-                print(" ")
         else:
             self.crear_error(char, self.fila, self.columna)
             cadena = cadena[1:]
