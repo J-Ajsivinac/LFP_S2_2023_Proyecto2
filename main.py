@@ -4,19 +4,22 @@ import sv_ttk
 from modules.lectura import cargar_json
 from modules.aLexico import AnalizadorLexico
 from modules.aSintactico import AnalizadorSintactico
+from modules.control import Control
+from modules import lectura
+import os
 
 # C:\Users\mesoi\Downloads
-text = ""
-with open(
-    "C:\\Users\\mesoi\\Downloads\\Archivo de prueba basico.txt",
-    "r",
-) as json_file:
-    text = json_file.read()
+# text = ""
+# with open(
+#     "C:\\Users\\mesoi\\Downloads\\Archivo de prueba basico.txt",
+#     "r",
+# ) as json_file:
+#     text = json_file.read()
 
-analizado = AnalizadorLexico()
-analizado.analizar(text)
-lista = analizado.regresar_tokens()
-analizado.imprimir()
+# analizado = AnalizadorLexico()
+# analizado.analizar(text)
+# lista = analizado.regresar_tokens()
+# analizado.imprimir()
 # sintactico = AnalizadorSintactico(lista)
 # sintactico.parser()
 # sintactico.imprimir()
@@ -26,7 +29,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Ventana Principal")
-        self.geometry("1066x645")
+        self.geometry("1070x668")
         self.resizable(0, 0)
 
         sv_ttk.set_theme("dark")
@@ -50,6 +53,7 @@ class Contendio(ttk.Frame):
         self.crear_medio()
         self.crear_final()
         self.archivo_actual = None
+        self.controlador = Control(self.text_consola)
 
     def crear_menu_superior(self):
         panel_superior = tk.Frame()
@@ -80,6 +84,7 @@ class Contendio(ttk.Frame):
             text=" Abrir",
             compound="left",
             width=7,
+            command=self.cargar_datos,
         )
         btn_1.grid_configure(padx=0)
         # btn_1.configure(foreground="#50dfea")
@@ -115,7 +120,7 @@ class Contendio(ttk.Frame):
         panel_izq_sup.rowconfigure(0, weight=1)
         panel_izq_sup.pack(fill="x", pady=0)
         panel_izq_sup.configure(bg="#34384f")
-        lbl_nombre = tk.Label(
+        self.lbl_nombre = tk.Label(
             panel_izq_sup,
             text="Nombre.bizdata",
             background="#34384f",
@@ -129,18 +134,28 @@ class Contendio(ttk.Frame):
             style="Accent.TButton",
         )
 
-        lbl_nombre.grid(row=0, column=0)
+        self.lbl_nombre.grid(row=0, column=0)
         btn_ejecutar.grid(row=0, column=1, sticky=tk.E)
 
         panel_text = tk.Frame(panel_izq)
+
+        self.hscrollbar = ttk.Scrollbar(panel_text, orient=tk.HORIZONTAL)
+        self.vscrollbar = ttk.Scrollbar(panel_text, orient=tk.VERTICAL)
+
         panel_text.pack(fill="y")
         self.text_code = tk.Text(
             panel_text,
             font=("Cascadia Code", 12),
             background="#212327",
             border=0,
-            wrap=None,
+            yscrollcommand=self.vscrollbar.set,
+            xscrollcommand=self.hscrollbar.set,
+            wrap="none",
         )
+        self.hscrollbar.config(command=self.text_code.xview)
+        self.hscrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        self.vscrollbar.config(command=self.text_code.yview)
+        self.vscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.text_code.pack(fill="both")
 
     def crear_panel_der(self, panel_der):
@@ -158,13 +173,21 @@ class Contendio(ttk.Frame):
         lbl_nombre.configure(bg="#34384f")
         panel_text = tk.Frame(panel_der)
         panel_text.pack(fill="y")
+        hscrollbar = ttk.Scrollbar(panel_text, orient=tk.HORIZONTAL)
+        vscrollbar = ttk.Scrollbar(panel_text, orient=tk.VERTICAL)
         self.text_consola = tk.Text(
             panel_text,
             font=("Cascadia Code", 12),
             background="#212327",
             border=0,
-            wrap=None,
+            wrap="none",
+            yscrollcommand=vscrollbar.set,
+            xscrollcommand=hscrollbar.set,
         )
+        hscrollbar.config(command=self.text_consola.xview)
+        hscrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        vscrollbar.config(command=self.text_consola.yview)
+        vscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.text_consola.pack(fill="both")
 
     def crear_final(self):
@@ -179,6 +202,13 @@ class Contendio(ttk.Frame):
         )
         lbl_nombre.pack()
 
+    def cargar_datos(self):
+        self.archivo_actual = lectura.cargar_json(self.text_code)
+        if self.archivo_actual:
+            _, nombre = os.path.split(self.archivo_actual)
+            self.lbl_nombre.config(text=nombre)
+            # self.actualizar_contador()
 
-# if __name__ == "__main__":
-#     #App()
+
+if __name__ == "__main__":
+    App()
