@@ -1,0 +1,904 @@
+
+        <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="report/css/style.css">
+                <title>Tokens</title>
+            </head>
+
+            <body>
+                <main>
+                    <div class="contenedor">
+                        <div class="titulo">
+                            <h2>Reporte de Tokens</h2>
+                        </div>
+                    <div class="contenido">
+                        <table>
+                            <tr>
+                                <th>Lexema</th>
+                                <th>Fila</th>
+                                <th>Columna</th>
+                                <th>Tipo</th>
+                            </tr>
+        
+                <tr>
+                    <td>#COMENTARIO</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>TipoToken.COMENTARIO</td>
+                </tr>
+            
+                <tr>
+                    <td>"""
+COMENTARIO MULTILINEA 
+
+"""</td>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>TipoToken.COMENTARIO_M</td>
+                </tr>
+            
+                <tr>
+                    <td>claves</td>
+                    <td>7</td>
+                    <td>1</td>
+                    <td>TipoToken.R_CLAVES</td>
+                </tr>
+            
+                <tr>
+                    <td>=</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>TipoToken.IGUAL</td>
+                </tr>
+            
+                <tr>
+                    <td>[</td>
+                    <td>7</td>
+                    <td>10</td>
+                    <td>TipoToken.CORCHETE_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"codigo"</td>
+                    <td>7</td>
+                    <td>11</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>7</td>
+                    <td>19</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"producto"</td>
+                    <td>7</td>
+                    <td>21</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>7</td>
+                    <td>31</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"precio_compra"</td>
+                    <td>7</td>
+                    <td>33</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>7</td>
+                    <td>48</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"precio_venta"</td>
+                    <td>7</td>
+                    <td>50</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>7</td>
+                    <td>64</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"stock"</td>
+                    <td>7</td>
+                    <td>66</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>]</td>
+                    <td>7</td>
+                    <td>73</td>
+                    <td>TipoToken.CORCHETE_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>#Corchetes = [, Llaves = {</td>
+                    <td>9</td>
+                    <td>2</td>
+                    <td>TipoToken.COMENTARIO</td>
+                </tr>
+            
+                <tr>
+                    <td>registros</td>
+                    <td>11</td>
+                    <td>1</td>
+                    <td>TipoToken.R_REGISTROS</td>
+                </tr>
+            
+                <tr>
+                    <td>=</td>
+                    <td>11</td>
+                    <td>11</td>
+                    <td>TipoToken.IGUAL</td>
+                </tr>
+            
+                <tr>
+                    <td>[</td>
+                    <td>11</td>
+                    <td>13</td>
+                    <td>TipoToken.CORCHETE_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>{</td>
+                    <td>12</td>
+                    <td>5</td>
+                    <td>TipoToken.LLAVE_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>1</td>
+                    <td>12</td>
+                    <td>6</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>12</td>
+                    <td>6</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Barbacoa"</td>
+                    <td>12</td>
+                    <td>8</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>12</td>
+                    <td>18</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>10.5</td>
+                    <td>12</td>
+                    <td>20</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>12</td>
+                    <td>20</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>20.0</td>
+                    <td>12</td>
+                    <td>22</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>12</td>
+                    <td>22</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>6</td>
+                    <td>12</td>
+                    <td>24</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>}</td>
+                    <td>12</td>
+                    <td>24</td>
+                    <td>TipoToken.LLAVE_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>{</td>
+                    <td>13</td>
+                    <td>5</td>
+                    <td>TipoToken.LLAVE_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>2</td>
+                    <td>13</td>
+                    <td>6</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>13</td>
+                    <td>6</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Salsa"</td>
+                    <td>13</td>
+                    <td>8</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>13</td>
+                    <td>15</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>13.0</td>
+                    <td>13</td>
+                    <td>17</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>13</td>
+                    <td>17</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>16.0</td>
+                    <td>13</td>
+                    <td>19</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>13</td>
+                    <td>19</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>7</td>
+                    <td>13</td>
+                    <td>21</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>}</td>
+                    <td>13</td>
+                    <td>21</td>
+                    <td>TipoToken.LLAVE_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>{</td>
+                    <td>14</td>
+                    <td>5</td>
+                    <td>TipoToken.LLAVE_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>3</td>
+                    <td>14</td>
+                    <td>6</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>14</td>
+                    <td>6</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Mayonesa"</td>
+                    <td>14</td>
+                    <td>8</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>14</td>
+                    <td>18</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>15.0</td>
+                    <td>14</td>
+                    <td>20</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>14</td>
+                    <td>20</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>18.0</td>
+                    <td>14</td>
+                    <td>22</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>14</td>
+                    <td>22</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>8</td>
+                    <td>14</td>
+                    <td>24</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>}</td>
+                    <td>14</td>
+                    <td>24</td>
+                    <td>TipoToken.LLAVE_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>{</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>TipoToken.LLAVE_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>4</td>
+                    <td>15</td>
+                    <td>6</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>15</td>
+                    <td>6</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Mostaza"</td>
+                    <td>15</td>
+                    <td>8</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>15</td>
+                    <td>17</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>14.0</td>
+                    <td>15</td>
+                    <td>19</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>15</td>
+                    <td>19</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>16.0</td>
+                    <td>15</td>
+                    <td>21</td>
+                    <td>TipoToken.REAL</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>15</td>
+                    <td>21</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>4</td>
+                    <td>15</td>
+                    <td>23</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>}</td>
+                    <td>15</td>
+                    <td>23</td>
+                    <td>TipoToken.LLAVE_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>]</td>
+                    <td>16</td>
+                    <td>1</td>
+                    <td>TipoToken.CORCHETE_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>imprimir</td>
+                    <td>19</td>
+                    <td>1</td>
+                    <td>TipoToken.R_IMPRIMIR</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>19</td>
+                    <td>9</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Reporte de "</td>
+                    <td>19</td>
+                    <td>10</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>19</td>
+                    <td>23</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>19</td>
+                    <td>24</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>imprimir</td>
+                    <td>20</td>
+                    <td>1</td>
+                    <td>TipoToken.R_IMPRIMIR</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>20</td>
+                    <td>9</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Abarroteria"</td>
+                    <td>20</td>
+                    <td>10</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>20</td>
+                    <td>23</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>20</td>
+                    <td>24</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>imprimirln</td>
+                    <td>21</td>
+                    <td>1</td>
+                    <td>TipoToken.R_IMPRIMIRLN</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>21</td>
+                    <td>11</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Reporte de "</td>
+                    <td>21</td>
+                    <td>12</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>21</td>
+                    <td>25</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>21</td>
+                    <td>26</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>imprimirln</td>
+                    <td>22</td>
+                    <td>1</td>
+                    <td>TipoToken.R_IMPRIMIRLN</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>22</td>
+                    <td>11</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Abarroteria"</td>
+                    <td>22</td>
+                    <td>12</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>22</td>
+                    <td>25</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>22</td>
+                    <td>26</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>datos</td>
+                    <td>24</td>
+                    <td>1</td>
+                    <td>TipoToken.R_DATOS</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>24</td>
+                    <td>6</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>24</td>
+                    <td>7</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>24</td>
+                    <td>8</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>conteo</td>
+                    <td>25</td>
+                    <td>1</td>
+                    <td>TipoToken.R_CONTEO</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>25</td>
+                    <td>7</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>25</td>
+                    <td>8</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>25</td>
+                    <td>9</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>promedio</td>
+                    <td>26</td>
+                    <td>5</td>
+                    <td>TipoToken.R_PROMEDIO</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>26</td>
+                    <td>13</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"precio_compra"</td>
+                    <td>26</td>
+                    <td>14</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>26</td>
+                    <td>29</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>26</td>
+                    <td>30</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>contarsi</td>
+                    <td>27</td>
+                    <td>1</td>
+                    <td>TipoToken.R_CONTARSI</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>27</td>
+                    <td>9</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"stock"</td>
+                    <td>27</td>
+                    <td>10</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>,</td>
+                    <td>27</td>
+                    <td>17</td>
+                    <td>TipoToken.COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>0</td>
+                    <td>27</td>
+                    <td>19</td>
+                    <td>TipoToken.ENTERO</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>27</td>
+                    <td>19</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>27</td>
+                    <td>20</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>sumar</td>
+                    <td>28</td>
+                    <td>5</td>
+                    <td>TipoToken.R_SUMAR</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>28</td>
+                    <td>10</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"stock"</td>
+                    <td>28</td>
+                    <td>11</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>28</td>
+                    <td>18</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>28</td>
+                    <td>19</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>max</td>
+                    <td>29</td>
+                    <td>5</td>
+                    <td>TipoToken.R_MAX</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>29</td>
+                    <td>8</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"precio_venta"</td>
+                    <td>29</td>
+                    <td>9</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>29</td>
+                    <td>23</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>29</td>
+                    <td>24</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>min</td>
+                    <td>30</td>
+                    <td>5</td>
+                    <td>TipoToken.R_MIN</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>30</td>
+                    <td>8</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"precio_compra"</td>
+                    <td>30</td>
+                    <td>9</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>30</td>
+                    <td>24</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>30</td>
+                    <td>25</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                <tr>
+                    <td>exportarReporte</td>
+                    <td>31</td>
+                    <td>1</td>
+                    <td>TipoToken.R_EXPORTAR</td>
+                </tr>
+            
+                <tr>
+                    <td>(</td>
+                    <td>31</td>
+                    <td>16</td>
+                    <td>TipoToken.PARENTESIS_APERTURA</td>
+                </tr>
+            
+                <tr>
+                    <td>"Reporte HTML de abarroteria"</td>
+                    <td>31</td>
+                    <td>17</td>
+                    <td>TipoToken.STRING</td>
+                </tr>
+            
+                <tr>
+                    <td>)</td>
+                    <td>31</td>
+                    <td>46</td>
+                    <td>TipoToken.PARENTESIS_CERRADURA</td>
+                </tr>
+            
+                <tr>
+                    <td>;</td>
+                    <td>31</td>
+                    <td>47</td>
+                    <td>TipoToken.PUNTO_COMA</td>
+                </tr>
+            
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </body>
+        </html>
+        

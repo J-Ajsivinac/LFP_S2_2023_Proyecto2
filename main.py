@@ -9,6 +9,8 @@ from modules import lectura
 from img.icons import Imagenes
 from PIL import Image, ImageTk
 import os
+import copy
+from modules.reporte import Reporte
 
 
 class App(tk.Tk):
@@ -40,6 +42,7 @@ class Contendio(ttk.Frame):
         self.crear_final()
         self.archivo_actual = None
         self.controlador = Control(self.text_consola)
+        self.lista_tokens = []
 
     def crear_menu_superior(self):
         panel_superior = tk.Frame()
@@ -60,7 +63,7 @@ class Contendio(ttk.Frame):
             font=("Montserrat", 12),
             borderwidth=20,
         )
-        button_sub_menu.add_command(label="  Tokens")
+        button_sub_menu.add_command(label="  Tokens", command=self.c_reporte_token)
         button_sub_menu.add_command(label="  Errores")
         button_sub_menu.add_command(label="  Arbol de Derivación")
 
@@ -209,6 +212,7 @@ class Contendio(ttk.Frame):
         analizado = AnalizadorLexico()
         analizado.analizar(texto)
         lista = analizado.regresar_tokens()
+        self.lista_tokens = copy.deepcopy(analizado.tokens)
         # analizado.imprimir()
         self.text_consola.config(state="normal")
         sintactico = AnalizadorSintactico(lista, self.controlador)
@@ -216,6 +220,15 @@ class Contendio(ttk.Frame):
         # sintactico.imprimir()
         self.text_consola.insert(tk.END, "\n  \n")
         self.text_consola.config(state="disabled")
+
+    def c_reporte_token(self):
+        if len(self.lista_tokens) == 0:
+            messagebox.showerror(message="No hay información procesada", title="Error")
+            return
+        reporte = Reporte()
+        _ruta = os.path.dirname(os.path.abspath(__file__))
+        ruta_archivo = os.path.join(_ruta, "reporte_tokens.html").replace("\\", "\\\\")
+        reporte.crear_reporte_tokens(self.lista_tokens, ruta_archivo)
 
 
 if __name__ == "__main__":
