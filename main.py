@@ -52,10 +52,21 @@ class Contendio(ttk.Frame):
         panel_superior.configure(bg="#080b0f")
 
         style_menu = ttk.Style()
+        img_o = Image.open(Imagenes.BTN_OPEN)
+        img_o = img_o.resize((21, 21), Image.LANCZOS)
+        self.img_open = ImageTk.PhotoImage(img_o)
+
+        img_r = Image.open(Imagenes.BTN_REPORT)
+        img_r = img_r.resize((21, 21), Image.LANCZOS)
+        self.img_report = ImageTk.PhotoImage(img_r)
         # style_menu.configure("Nuevo.TButton", font=("Montserrat SemiBold", 12))
         style_menu.configure("Nuevo.TMenubutton", font=("Montserrat SemiBold", 12))
         menu_button = ttk.Menubutton(
-            panel_superior, text="Reportes", compound="left", style="Nuevo.TMenubutton"
+            panel_superior,
+            image=self.img_report,
+            text=" Reportes",
+            compound="left",
+            style="Nuevo.TMenubutton",
         )
 
         button_sub_menu = tk.Menu(
@@ -72,6 +83,7 @@ class Contendio(ttk.Frame):
         menu_button["menu"] = button_sub_menu
         btn_1 = ttk.Button(
             panel_superior,
+            image=self.img_open,
             text=" Abrir",
             compound="left",
             width=7,
@@ -126,7 +138,7 @@ class Contendio(ttk.Frame):
             compound="left",
             text="",
             style="Accent.TButton",
-            width=3,
+            width=2,
             command=self.analizar_datos,
         )
 
