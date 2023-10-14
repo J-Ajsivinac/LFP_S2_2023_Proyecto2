@@ -43,6 +43,8 @@ class Contendio(ttk.Frame):
         self.archivo_actual = None
         self.controlador = Control(self.text_consola)
         self.lista_tokens = []
+        self.errores_lex = []
+        self.errores_sin = []
 
     def crear_menu_superior(self):
         panel_superior = tk.Frame()
@@ -64,7 +66,7 @@ class Contendio(ttk.Frame):
             borderwidth=20,
         )
         button_sub_menu.add_command(label="  Tokens", command=self.c_reporte_token)
-        button_sub_menu.add_command(label="  Errores")
+        button_sub_menu.add_command(label="  Errores", command=self.c_reporte_errores)
         button_sub_menu.add_command(label="  Arbol de Derivación")
 
         menu_button["menu"] = button_sub_menu
@@ -213,10 +215,12 @@ class Contendio(ttk.Frame):
         analizado.analizar(texto)
         lista = analizado.regresar_tokens()
         self.lista_tokens = copy.deepcopy(analizado.tokens)
+        self.errores_lex = copy.deepcopy(analizado.errores)
         # analizado.imprimir()
         self.text_consola.config(state="normal")
         sintactico = AnalizadorSintactico(lista, self.controlador)
         sintactico.parser()
+        self.errores_sin = copy.deepcopy(sintactico.errores_s)
         # sintactico.imprimir()
         self.text_consola.insert(tk.END, "\n  \n")
         self.text_consola.config(state="disabled")
@@ -229,6 +233,15 @@ class Contendio(ttk.Frame):
         _ruta = os.path.dirname(os.path.abspath(__file__))
         ruta_archivo = os.path.join(_ruta, "reporte_tokens.html").replace("\\", "\\\\")
         reporte.crear_reporte_tokens(self.lista_tokens, ruta_archivo)
+
+    def c_reporte_errores(self):
+        if len(self.errores_lex) == 0 and len(self.errores_sin) == 0:
+            messagebox.showerror(message="No hay ningún tipo de errores", title="Error")
+            return
+        reporte = Reporte()
+        _ruta = os.path.dirname(os.path.abspath(__file__))
+        ruta_archivo = os.path.join(_ruta, "reporte_errores.html").replace("\\", "\\\\")
+        reporte.crear_reporte_errores(self.errores_lex, self.errores_sin, ruta_archivo)
 
 
 if __name__ == "__main__":

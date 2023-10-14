@@ -42,6 +42,7 @@ main .contenedor {
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
+
 }
 
 main .contenedor .titulo {
@@ -87,15 +88,45 @@ main .contenedor .contenido table tr th {
     padding-left: 10px;
 }
 
-/* main .contenedor .contenido table tr:nth-child(even) {
-    background-color: #f2f2f2;
+main .contenedor .contenido-error {
+    margin-bottom: 30px;
+    width: 100%;
 }
 
-main .contenedor .contenido table tr:nth-child(odd) {
-    background-color: #f2f2f2;
-} */
+main .contenedor .contenido-error table tr td {
+    height: 50px;
+    padding-left: 10px;
+    color: #C1C4C9;
+}
 
-main .contenedor .contenido table tr td {
+main .contenedor .contenido-error {
+    width: 100%;
+    padding: 15px 25px 25px 20px;
+    background-color: #17191F;
+    border-radius: 6px;
+    min-width: 690px;
+}
+
+main .contenedor .contenido-error table {
+    /* padding: 15px 20px 10px 10px; */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+main .contenedor .contenido-error table tr {
+    border-bottom: 1px solid #3a3845;
+}
+
+main .contenedor .contenido-error table tr th {
+    width: 33.33%;
+    text-align: start;
+    font-size: 1.3rem;
+    height: 45px;
+    /* background-color: #393E4C; */
+    padding-left: 10px;
+}
+
+main .contenedor .contenido-error table tr td {
     height: 50px;
     padding-left: 10px;
     color: #C1C4C9;
