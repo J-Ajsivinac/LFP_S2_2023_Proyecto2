@@ -326,7 +326,7 @@ class AnalizadorLexico:
 
     def x1_11(self, cadena):
         char = cadena[0]
-        if char == '"':
+        if char == "'":
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x1_12(cadena)
@@ -353,7 +353,7 @@ class AnalizadorLexico:
 
     def x1_12(self, cadena):
         char = cadena[0]
-        if char == '"':
+        if char == "'":
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x1_13(cadena)
@@ -380,7 +380,7 @@ class AnalizadorLexico:
 
     def x1_13(self, cadena):
         char = cadena[0]
-        if char == '"':
+        if char == "'":
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x1_14(cadena)
@@ -405,7 +405,7 @@ class AnalizadorLexico:
 
     def x1_14(self, cadena):
         char = cadena[0]
-        if char == '"':
+        if char == "'":
             self.buffer += char
             cadena = cadena[1:]
             self.agregar_token(TipoToken.COMENTARIO_M, self.buffer)

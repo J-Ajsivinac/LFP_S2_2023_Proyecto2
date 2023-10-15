@@ -55,7 +55,7 @@ class Reporte:
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link rel="stylesheet" href="report/css/style.css">
-                <title>Tokens</title>
+                <title>Errores</title>
             </head>
 
             <body>
@@ -125,7 +125,7 @@ class Reporte:
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link rel="stylesheet" href="report/css/style.css">
-                <title>Tokens</title>
+                <title>Datos</title>
             </head>
 
             <body>
