@@ -88,6 +88,12 @@ main .contenedor .contenido table tr th {
     padding-left: 10px;
 }
 
+main .contenedor .contenido table tr td {
+    height: 50px;
+    padding-left: 10px;
+    color: #C1C4C9;
+}
+
 main .contenedor .contenido-error {
     margin-bottom: 30px;
     width: 100%;

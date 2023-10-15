@@ -122,11 +122,11 @@ class Contendio(ttk.Frame):
         panel_izq_sup.columnconfigure(1, weight=1)
         panel_izq_sup.rowconfigure(0, weight=1)
         panel_izq_sup.pack(fill="x", pady=0)
-        panel_izq_sup.configure(bg="#34384f")
+        panel_izq_sup.configure(bg="#3C3F69")
         self.lbl_nombre = tk.Label(
             panel_izq_sup,
             text="Nombre.bizdata",
-            background="#34384f",
+            background="#3C3F69",
             font=("Montserrat SemiBold", 11),
         )
         img_1 = Image.open(Imagenes.BTN_PLAY)
@@ -178,7 +178,7 @@ class Contendio(ttk.Frame):
             panel_der_sup, text="Consola", font=("Montserrat SemiBold", 11), pady=5
         )
         lbl_nombre.pack(fill="x", expand=True)
-        lbl_nombre.configure(bg="#34384f")
+        lbl_nombre.configure(bg="#3C3F69")
         panel_text = tk.Frame(panel_der)
         panel_text.pack(fill="y")
         hscrollbar = ttk.Scrollbar(panel_text, orient=tk.HORIZONTAL)
@@ -247,6 +247,10 @@ class Contendio(ttk.Frame):
         reporte.crear_reporte_tokens(self.lista_tokens, ruta_archivo)
 
     def c_reporte_errores(self):
+        if len(self.lista_tokens) == 0:
+            messagebox.showerror(message="No hay información procesada", title="Error")
+            return
+
         if len(self.errores_lex) == 0 and len(self.errores_sin) == 0:
             messagebox.showerror(message="No hay ningún tipo de errores", title="Error")
             return

@@ -15,6 +15,8 @@ class AnalizadorSintactico:
         self.diccionario = ctrl.matriz
         self.claves = None
         self.contador = 0
+        self.size = 0
+        self.size_list = 0
 
     def eliminar_primero(self):
         try:
@@ -43,6 +45,7 @@ class AnalizadorSintactico:
             if actual.tipo in [TipoToken.R_CLAVES]:
                 self.asignacion()
                 self.claves = list(self.diccionario.keys())
+                self.size = len(self.claves)
                 # print(f"contador --->{self.claves}")
             elif actual.tipo in [TipoToken.R_REGISTROS]:
                 self.registros()
@@ -399,6 +402,7 @@ class AnalizadorSintactico:
         if actual is None:
             actual = self.eliminar_primero()
         if actual.tipo == TipoToken.LLAVE_APERTURA:
+            self.size_list += 1
             self.elementos_r()
             self.contador = 0
             if (
@@ -426,6 +430,7 @@ class AnalizadorSintactico:
                 actual.fila,
                 actual.columna,
             )
+            self.size_list += 1
             self.elementos_r(actual)
             self.contador = 0
             if (
@@ -457,7 +462,18 @@ class AnalizadorSintactico:
                 self.elementos_r()
 
             elif actual.tipo == TipoToken.LLAVE_CERRADURA:
-                return
+                if self.contador < self.size:
+                    faltantes = self.size - self.contador
+                    self.crear_error(
+                        f"Falta {faltantes} valores en el arreglo",
+                        actual.fila,
+                        actual.columna - 1,
+                    )
+                    for i, key in enumerate(self.claves):
+                        if len(self.diccionario[key]) == self.size_list:
+                            self.diccionario[key].pop()
+                        # self.diccionario[key].pop()
+                    self.size_list -= 1
             else:
                 self.crear_error(
                     "Se esperaba un }",
@@ -480,8 +496,8 @@ class AnalizadorSintactico:
             ]:
                 return
             else:
-                self.diccionario[self.claves[self.contador]].append(None)
-                self.contador += 1
+                # self.diccionario[self.claves[self.contador]].append(None)
+                # self.contador += 1
                 self.elementos_r()
 
     def usar_operacion(self, tipo, valor1=None, valor2=None):
