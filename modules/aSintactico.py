@@ -10,6 +10,24 @@ class AnalizadorSintactico:
         self.lista_tokens = lista_tokens
         self.copia = copy.deepcopy(lista_tokens)
         self.errores_s = []
+        self.salidas_asig = [
+            TipoToken.COMENTARIO,
+            TipoToken.COMENTARIO_M,
+            TipoToken.R_CLAVES,
+            TipoToken.R_REGISTROS,
+        ]
+        self.reservadas = [
+            TipoToken.R_IMPRIMIR,
+            TipoToken.R_IMPRIMIRLN,
+            TipoToken.R_CONTEO,
+            TipoToken.R_PROMEDIO,
+            TipoToken.R_CONTARSI,
+            TipoToken.R_DATOS,
+            TipoToken.R_SUMAR,
+            TipoToken.R_MAX,
+            TipoToken.R_MIN,
+            TipoToken.R_EXPORTAR,
+        ]
         self.es_ultimo = False
         self.ctrl = ctrl
         self.diccionario = ctrl.matriz
@@ -469,7 +487,7 @@ class AnalizadorSintactico:
                         actual.fila,
                         actual.columna - 1,
                     )
-                    for i, key in enumerate(self.claves):
+                    for key in self.claves:
                         if len(self.diccionario[key]) == self.size_list:
                             self.diccionario[key].pop()
                         # self.diccionario[key].pop()

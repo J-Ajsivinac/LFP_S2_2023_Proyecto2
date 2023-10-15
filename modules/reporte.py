@@ -113,3 +113,55 @@ class Reporte:
         """
         with open(ruta, "w", encoding="utf-8") as f:
             f.write(html)
+
+    def crear_reporte_datos(self, datos: dict, titulo, ruta):
+        titulo = titulo.replace('"', "")
+        keys = list(datos.keys())
+        html = f"""
+        <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="report/css/style.css">
+                <title>Tokens</title>
+            </head>
+
+            <body>
+                <main>
+                    <div class="contenedor">
+                        <div class="titulo">
+                            <h2>{titulo}s</h2>
+                        </div>
+                    <div class="contenido-reporte">
+                        <table>
+                            <tr>
+            """
+        ancho = 100 / len(keys)
+        for key in keys:
+            html += f"""
+            <th style="width: {ancho}%;">{key.replace('"',"")}</th>              
+            """
+        html += "</tr>"
+        # encabezados = "\t".join(datos.keys()) + "\n"
+        size = len(next(iter(datos.values())))
+        for i in range(size):
+            html += "<tr>"
+            for encabezado in datos.keys():
+                html += f"""
+                    <td>{datos[encabezado][i]}</td>
+                """
+            html += "</tr>"
+
+        html += """
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </body>
+        </html>
+        """
+
+        with open(ruta, "w", encoding="utf-8") as f:
+            f.write(html)

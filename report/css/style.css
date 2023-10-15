@@ -61,24 +61,6 @@ main .contenedor .titulo h2 {
     color: #afa7ff;
 }
 
-main .contenedor .contenido {
-    width: 100%;
-    padding: 15px 25px 25px 20px;
-    background-color: #17191F;
-    border-radius: 6px;
-    min-width: 690px;
-}
-
-main .contenedor .contenido table {
-    /* padding: 15px 20px 10px 10px; */
-    width: 100%;
-    border-collapse: collapse;
-}
-
-main .contenedor .contenido table tr {
-    border-bottom: 1px solid #3a3845;
-}
-
 main .contenedor .contenido table tr th {
     width: 25%;
     text-align: start;
@@ -88,24 +70,23 @@ main .contenedor .contenido table tr th {
     padding-left: 10px;
 }
 
-main .contenedor .contenido table tr td {
-    height: 50px;
-    padding-left: 10px;
-    color: #C1C4C9;
-}
-
-main .contenedor .contenido-error {
+main .contenedor .contenido,
+main .contenedor .contenido-error,
+main .contenedor .contenido-reporte {
     margin-bottom: 30px;
     width: 100%;
 }
 
-main .contenedor .contenido-error table tr td {
+main .contenedor .contenido-error table tr td,
+main .contenedor .contenido-reporte table tr td {
     height: 50px;
     padding-left: 10px;
     color: #C1C4C9;
 }
 
-main .contenedor .contenido-error {
+main .contenedor .contenido,
+main .contenedor .contenido-error,
+main .contenedor .contenido-reporte {
     width: 100%;
     padding: 15px 25px 25px 20px;
     background-color: #17191F;
@@ -113,13 +94,17 @@ main .contenedor .contenido-error {
     min-width: 690px;
 }
 
-main .contenedor .contenido-error table {
+main .contenedor .contenido table,
+main .contenedor .contenido-error table,
+main .contenedor .contenido-reporte table {
     /* padding: 15px 20px 10px 10px; */
     width: 100%;
     border-collapse: collapse;
 }
 
-main .contenedor .contenido-error table tr {
+main .contenedor .contenido table tr,
+main .contenedor .contenido-error table tr,
+main .contenedor .contenido-reporte table tr {
     border-bottom: 1px solid #3a3845;
 }
 
@@ -132,8 +117,18 @@ main .contenedor .contenido-error table tr th {
     padding-left: 10px;
 }
 
-main .contenedor .contenido-error table tr td {
+main .contenedor .contenido table tr td,
+main .contenedor .contenido-error table tr td,
+main .contenedor .contenido-reporte table tr td {
     height: 50px;
     padding-left: 10px;
     color: #C1C4C9;
+}
+
+main .contenedor .contenido-reporte table tr th {
+    /* width: 33.33%; */
+    text-align: start;
+    font-size: 1.3rem;
+    height: 45px;
+    padding-left: 10px;
 }

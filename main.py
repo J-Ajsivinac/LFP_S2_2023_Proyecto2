@@ -41,7 +41,8 @@ class Contendio(ttk.Frame):
         self.crear_medio()
         self.crear_final()
         self.archivo_actual = None
-        self.controlador = Control(self.text_consola)
+        _ruta = os.path.dirname(os.path.abspath(__file__))
+        self.controlador = Control(self.text_consola, _ruta)
         self.lista_tokens = []
         self.errores_lex = []
         self.errores_sin = []

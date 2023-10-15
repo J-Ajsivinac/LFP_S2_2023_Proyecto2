@@ -1,10 +1,13 @@
 import tkinter as tk
+from modules.reporte import Reporte
+import os
 
 
 class Control:
-    def __init__(self, consola: tk.Text):
+    def __init__(self, consola: tk.Text, ruta):
         self.matriz = {}
         self.consola = consola
+        self.ruta = ruta
 
     def cargar_claves(self, i_d):
         self.matriz[i_d] = []
@@ -72,4 +75,9 @@ class Control:
         self.consola.insert("end", "\n" + str(minimo))
 
     def exportar(self, nombre):
-        self.consola.insert("end", "\n" + f"exportando {nombre}")
+        nombre = nombre.replace('"', "")
+        ruta_archivo = os.path.join(self.ruta, "reporte_datos.html").replace(
+            "\\", "\\\\"
+        )
+        rep = Reporte()
+        rep.crear_reporte_datos(self.matriz, nombre, ruta_archivo)
