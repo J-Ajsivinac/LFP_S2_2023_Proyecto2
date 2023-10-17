@@ -235,6 +235,7 @@ class Contendio(ttk.Frame):
         sintactico.parser()
         self.errores_sin = copy.deepcopy(sintactico.errores_s)
         # sintactico.imprimir()
+        print(sintactico.datos_grafica)
         self.text_consola.insert(tk.END, "\n  \n")
         self.text_consola.config(state="disabled")
 
