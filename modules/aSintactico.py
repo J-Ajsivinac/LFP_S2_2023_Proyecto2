@@ -41,14 +41,12 @@ class AnalizadorSintactico:
         try:
             return self.lista_tokens.pop(0)
         except Exception as _:
-            ultimo = self.copia[-1]
             if not self.es_ultimo:
+                ultimo = self.copia[-1]
                 ultimo.columna += len(ultimo.valor)
                 self.es_ultimo = True
-            else:
-                ultimo.columna += 1
-            return ultimo
-            # return None
+                return ultimo
+            return None
 
     def crear_error(self, datos, fila, columna):
         if datos is None:
@@ -108,6 +106,8 @@ class AnalizadorSintactico:
             actual_valor = actual.tipo
             resp, resp2 = self.instruccion(actual)
             actual = self.eliminar_primero()
+            if actual is None:
+                return
             self.datos_grafica.append(">")
             if actual and actual.tipo == TipoToken.PUNTO_COMA:
                 self.datos_grafica.append(actual.valor)
@@ -211,12 +211,14 @@ class AnalizadorSintactico:
                 actual.columna,
             )
             if actual.tipo not in [
-                TipoToken.CORCHETE_CERRADURA,
+                TipoToken.LLAVE_CERRADURA,
                 TipoToken.R_CLAVES,
                 TipoToken.R_REGISTROS,
                 TipoToken.COMENTARIO_M,
                 TipoToken.COMENTARIO,
+                TipoToken.CORCHETE_CERRADURA,
             ]:
+                self.lista_tokens.insert(0, actual)
                 return
             else:
                 self.elementos()
@@ -304,6 +306,8 @@ class AnalizadorSintactico:
                     actual.fila,
                     actual.columna,
                 )
+                if len(self.lista_tokens) == 0:
+                    return
                 if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
                     pass
                 else:
@@ -329,12 +333,16 @@ class AnalizadorSintactico:
                         actual.columna,
                     )
             else:
+                if len(self.lista_tokens) == 0:
+                    return
                 self.crear_error(
                     "Se esperaba una cadena de texto",
                     actual.fila,
                     actual.columna,
                 )
                 actual = self.eliminar_primero()
+                if actual is None:
+                    return
                 if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
                     pass
                 else:
@@ -461,7 +469,18 @@ class AnalizadorSintactico:
     def arreglos(self, actual=None):
         self.datos_grafica.append("Arreglos")
         if actual is None:
+            if len(self.lista_tokens) > 0:
+                actual = self.eliminar_primero()
+
+        if actual is None:
             actual = self.eliminar_primero()
+            self.crear_error(
+                "Se esperaba un {",
+                actual.fila,
+                actual.columna,
+            )
+            return
+
         if actual.tipo == TipoToken.LLAVE_APERTURA:
             self.size_list += 1
             self.datos_grafica.append("{")
@@ -519,8 +538,9 @@ class AnalizadorSintactico:
             valor = actual.valor
             if actual.tipo in [TipoToken.STRING]:
                 valor = valor.replace('"', "")
-            self.diccionario[self.claves[self.contador]].append(valor)
-            self.contador += 1
+            if self.contador < self.size:
+                self.diccionario[self.claves[self.contador]].append(valor)
+                self.contador += 1
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.COMA:
                 self.elementos_r()
@@ -559,11 +579,13 @@ class AnalizadorSintactico:
                 TipoToken.COMENTARIO_M,
                 TipoToken.COMENTARIO,
             ]:
+                self.lista_tokens.insert(0, actual)
                 return
             else:
                 # self.diccionario[self.claves[self.contador]].append(None)
                 # self.contador += 1
-                self.elementos_r()
+                if self.lista_tokens > 0:
+                    self.elementos_r()
 
     def usar_operacion(self, tipo, valor1=None, valor2=None):
         if tipo == TipoToken.R_IMPRIMIR:
