@@ -56,6 +56,8 @@ class AnalizadorLexico:
 
     def limpiar(self, cadena):
         puntero = 0
+        if self.com_abierto:
+            return cadena, 0
         while cadena and (puntero <= len(cadena) - 1):
             char = cadena[puntero]
             puntero += 1
@@ -139,10 +141,12 @@ class AnalizadorLexico:
         elif char in ['"']:
             self.buffer += char
             cadena = cadena[1:]
+            self.com_abierto = True
             self.estado = 8
         elif char == "'":
             self.buffer += char
             cadena = cadena[1:]
+            self.com_abierto = True
             self.estado = 18
         elif char.isalpha():
             self.estado = 3
@@ -191,7 +195,8 @@ class AnalizadorLexico:
         else:
             self.crear_error(char, self.fila, self.columna)
             cadena = cadena[1:]
-            cadena = self.x_5(cadena)
+            cadena = self.x_3(cadena)
+            # self.estado = 1
         return cadena
 
     def x_5(self, cadena):
@@ -255,16 +260,17 @@ class AnalizadorLexico:
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x_11(cadena)
-        elif char.isalpha():
+            self.com_abierto = False
+        else:
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x_9(cadena)
-        else:
-            self.columna += 1
-            self.crear_error(char, self.fila, self.columna)
-            cadena = cadena[1:]
-            self.buffer = ""
-            self.estado = 1
+        # else:
+        #     self.columna += 1
+        #     self.crear_error(char, self.fila, self.columna)
+        #     cadena = cadena[1:]
+        #     self.buffer = ""
+        #     self.estado = 1
         return cadena
 
     def x1_8(self, cadena):
@@ -273,25 +279,37 @@ class AnalizadorLexico:
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x1_11(cadena)
-        elif char.isalpha():
+            self.com_abierto = False
+        else:
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x1_9(cadena)
-        else:
-            valor = self.buffer + char
-            self.crear_error(valor, self.fila, self.columna)
-            cadena = cadena[1:]
-            self.estado = 1
+        # else:
+        #     valor = self.buffer + char
+        #     self.crear_error(valor, self.fila, self.columna)
+        #     cadena = cadena[1:]
+        #     self.estado = 1
         return cadena
 
     def x_9(self, cadena):
+        if cadena is None or len(cadena) == 0:
+            self.crear_error('"', self.fila, self.columna)
+            self.estado = 1
+            return None
         char = cadena[0]
         if char == '"':
             self.buffer += char
             cadena = cadena[1:]
             self.agregar_token(TipoToken.STRING, self.buffer)
+            self.com_abierto = False
             self.buffer = ""
         else:
+            if char == "\n":
+                self.fila += 1
+                self.columna = 1
+                self.crear_error('falta de cierre "', self.fila, self.columna)
+                self.estado = 1
+                return cadena
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x_9(cadena)
@@ -299,12 +317,17 @@ class AnalizadorLexico:
         return cadena
 
     def x1_9(self, cadena):
+        if cadena is None or len(cadena) == 0:
+            self.crear_error('"', self.fila, self.columna)
+            self.estado = 1
+            return None
         char = cadena[0]
         if char == "'":
             self.buffer += char
             cadena = cadena[1:]
             self.agregar_token(TipoToken.STRING, self.buffer)
             self.buffer = ""
+            self.com_abierto = False
         else:
             cadena = cadena[1:]
             self.buffer += char
@@ -320,6 +343,7 @@ class AnalizadorLexico:
             cadena = self.x_12(cadena)
         else:
             self.crear_error(self.buffer, self.fila, self.columna)
+            self.com_abierto = False
             self.estado = 1
             self.buffer = ""
         return cadena
@@ -332,11 +356,16 @@ class AnalizadorLexico:
             cadena = self.x1_12(cadena)
         else:
             self.crear_error(self.buffer, self.fila, self.columna)
+            self.com_abierto = False
             self.estado = 1
             self.buffer = ""
         return cadena
 
     def x_12(self, cadena):
+        if cadena is None or len(cadena) == 0:
+            self.crear_error('No hay cierre de "', self.fila, self.columna)
+            self.estado = 1
+            return None
         char = cadena[0]
         if char == '"':
             self.buffer += char
@@ -374,6 +403,7 @@ class AnalizadorLexico:
             cadena = self.x_14(cadena)
         else:
             self.crear_error(self.buffer, self.fila, self.columna, True)
+            self.com_abierto = False
             self.estado = 1
             self.buffer = ""
         return cadena
@@ -386,6 +416,7 @@ class AnalizadorLexico:
             cadena = self.x1_14(cadena)
         else:
             self.crear_error(self.buffer, self.fila, self.columna)
+            self.com_abierto = False
             self.estado = 1
             self.buffer = ""
         return cadena
@@ -399,6 +430,7 @@ class AnalizadorLexico:
             self.buffer = ""
         else:
             self.crear_error(self.buffer, self.fila, self.columna)
+            self.com_abierto = False
             self.estado = 1
             self.buffer = ""
         return cadena
@@ -411,6 +443,7 @@ class AnalizadorLexico:
             self.agregar_token(TipoToken.COMENTARIO_M, self.buffer)
             self.buffer = ""
         else:
+            self.com_abierto = False
             self.crear_error(char, self.fila, self.columna)
             self.estado = 1
             self.buffer = ""

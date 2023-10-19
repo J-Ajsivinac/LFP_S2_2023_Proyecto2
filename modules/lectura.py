@@ -7,7 +7,7 @@ def cargar_json(text_widget):
         filetypes=[("Archivos bizdata", "*.bizdata")]
     )
     if file_path:
-        with open(file_path, "r") as json_file:
+        with open(file_path, "r", encoding="utf-8") as json_file:
             json_content = json_file.read()
             text_widget.delete(
                 "1.0", "end"

@@ -5,6 +5,7 @@ from modules.lectura import cargar_json
 from modules.aLexico import AnalizadorLexico
 from modules.aSintactico import AnalizadorSintactico
 from modules.control import Control
+from modules.graph import Graph
 from modules import lectura
 from img.icons import Imagenes
 from PIL import Image, ImageTk
@@ -46,6 +47,7 @@ class Contendio(ttk.Frame):
         self.lista_tokens = []
         self.errores_lex = []
         self.errores_sin = []
+        self.info_grafica = []
 
     def crear_menu_superior(self):
         panel_superior = tk.Frame()
@@ -79,7 +81,9 @@ class Contendio(ttk.Frame):
         )
         button_sub_menu.add_command(label="  Tokens", command=self.c_reporte_token)
         button_sub_menu.add_command(label="  Errores", command=self.c_reporte_errores)
-        button_sub_menu.add_command(label="  Arbol de Derivación")
+        button_sub_menu.add_command(
+            label="  Arbol de Derivación", command=self.c_reporte_grafica
+        )
 
         menu_button["menu"] = button_sub_menu
         btn_1 = ttk.Button(
@@ -229,15 +233,30 @@ class Contendio(ttk.Frame):
         lista = analizado.regresar_tokens()
         self.lista_tokens = copy.deepcopy(analizado.tokens)
         self.errores_lex = copy.deepcopy(analizado.errores)
+        # print(self.lista_tokens)
         # analizado.imprimir()
         self.text_consola.config(state="normal")
         self.controlador.reiniciar()
+        contador_lineas = self.text_consola.get("1.0", "end").strip()
+        if contador_lineas:
+            contador_lineas = contador_lineas.count("\n") + 1
+        else:
+            contador_lineas = 0
         sintactico = AnalizadorSintactico(lista, self.controlador)
         sintactico.parser()
         self.errores_sin = copy.deepcopy(sintactico.errores_s)
-        sintactico.imprimir()
+        # sintactico.imprimir()
+        grafica = Graph(sintactico.datos_grafica)
+        self.info_grafica = sintactico.datos_grafica
         # print(sintactico.datos_grafica)
-        self.text_consola.insert(tk.END, "\n  \n")
+        contador_temp = self.text_consola.get("1.0", "end").strip()
+        if contador_temp:
+            contador_temp = contador_temp.count("\n") + 1
+        else:
+            contador_temp = 0
+        # print(contador_lineas, contador_temp)
+        if contador_temp > contador_lineas:
+            self.text_consola.insert(tk.END, "\n  \n")
         self.text_consola.config(state="disabled")
 
     def c_reporte_token(self):
@@ -261,6 +280,12 @@ class Contendio(ttk.Frame):
         _ruta = os.path.dirname(os.path.abspath(__file__))
         ruta_archivo = os.path.join(_ruta, "reporte_errores.html").replace("\\", "\\\\")
         reporte.crear_reporte_errores(self.errores_lex, self.errores_sin, ruta_archivo)
+
+    def c_reporte_grafica(self):
+        if len(self.lista_tokens) == 0:
+            messagebox.showerror(message="No hay información procesada", title="Error")
+            return
+        print(self.info_grafica)
 
 
 if __name__ == "__main__":
