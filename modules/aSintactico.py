@@ -70,33 +70,28 @@ class AnalizadorSintactico:
         if len(self.lista_tokens) == 0:
             return
         # self.datos_grafica.append("<")
-        inicio.append("otro comando")
-        self.otro_comando()
+        # inicio.append("otro comando")
+        self.otro_comando(inicio)
 
     def comando(self, comando: list):
         actual = self.eliminar_primero()
         if actual.tipo in [TipoToken.COMENTARIO, TipoToken.COMENTARIO_M]:
-            # self.datos_grafica.append("Comentario")
-            # self.datos_grafica.append(">")
             comando.append(actual.valor)
             return
         if actual.tipo in [TipoToken.R_CLAVES]:
             comando.append("asignacion")
-            # self.datos_grafica.append("asignacion")
-            # self.datos_grafica.append("<")
-            # self.datos_grafica.append(f"{actual.valor}")
             asignacion = []
             asignacion.append(actual.valor)
             self.asignacion(asignacion)
             comando.append(asignacion)
             self.claves = list(self.diccionario.keys())
             self.size = len(self.claves)
-            # print(f"contador --->{self.claves}")
         elif actual.tipo in [TipoToken.R_REGISTROS]:
-            # self.datos_grafica.append("asignacion")
-            # self.datos_grafica.append("<")
-            # self.datos_grafica.append(f"{actual.valor}")
-            self.registros()
+            comando.append("asignacion")
+            asignacion = []
+            asignacion.append(actual.valor)
+            self.registros(asignacion)
+            comando.append(asignacion)
         elif actual.tipo in [
             TipoToken.R_CONTARSI,
             TipoToken.R_EXPORTAR,
@@ -109,16 +104,17 @@ class AnalizadorSintactico:
             TipoToken.R_SUMAR,
             TipoToken.R_PROMEDIO,
         ]:
-            # self.datos_grafica.append("instruccion")
-            # self.datos_grafica.append("<")
+            comando.append("instruccion")
+            instruccion = []
+            instruccion.append(actual.valor)
             actual_valor = actual.tipo
-            resp, resp2 = self.instruccion(actual)
+            resp, resp2 = self.instruccion(actual, instruccion)
+            comando.append(instruccion)
             actual = self.eliminar_primero()
             if actual is None:
                 return
-            # self.datos_grafica.append(">")
             if actual and actual.tipo == TipoToken.PUNTO_COMA:
-                # self.datos_grafica.append(actual.valor)
+                instruccion.append(actual.valor)
                 if actual_valor == TipoToken.R_CONTARSI:
                     if resp is not None and resp2 is not None:
                         self.usar_operacion(actual_valor, resp, resp2)
@@ -139,11 +135,15 @@ class AnalizadorSintactico:
                 actual.columna,
             )
 
-    def otro_comando(self):
+    def otro_comando(self, inicio: list):
         if len(self.lista_tokens) > 0:
-            inicio = []
-            self.datos_grafica.append("inicio")
-            self.inicio(inicio)
+            inicio.append("otro comando")
+            otro_comando = []
+            otro_comando.append("inicio")
+            inicio_2 = []
+            self.inicio(inicio_2)
+            otro_comando.append(inicio_2)
+            inicio.append(otro_comando)
             # self.inicio()
 
     def asignacion(self, asignacion: list):
@@ -247,7 +247,7 @@ class AnalizadorSintactico:
             else:
                 self.elementos()
 
-    def instruccion(self, valor):
+    def instruccion(self, valor, instruccion: list):
         respuesta = None
         respuesta2 = None
         if valor.tipo in [
@@ -259,14 +259,14 @@ class AnalizadorSintactico:
             TipoToken.R_MIN,
             TipoToken.R_EXPORTAR,
         ]:
-            # self.datos_grafica.append(f"{valor.valor}")
-            respuesta = self.instruccion_1()
+            # instruccion_1 = []
+            respuesta = self.instruccion_1(instruccion=instruccion)
         elif valor.tipo in [TipoToken.R_DATOS, TipoToken.R_CONTEO]:
             # self.datos_grafica.append(f"{valor.valor}")
-            respuesta = self.instruccion_0()
+            respuesta = self.instruccion_0(instruccion=instruccion)
         elif valor.tipo in [TipoToken.R_CONTARSI]:
             # self.datos_grafica.append(f"{valor.valor}")
-            respuesta, respuesta2 = self.instruccion_2()
+            respuesta, respuesta2 = self.instruccion_2(instruccion=instruccion)
             # if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
             #     pass
             # else:
@@ -277,14 +277,14 @@ class AnalizadorSintactico:
             #     )
         return respuesta, respuesta2
 
-    def instruccion_0(self):
+    def instruccion_0(self, instruccion: list = None):
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.PARENTESIS_APERTURA:
             # self.datos_grafica.append(actual.valor)
+            instruccion.append(actual.valor)
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
-                # self.datos_grafica.append(actual.valor)
-                pass
+                instruccion.append(actual.valor)
             else:
                 self.crear_error(
                     "Se esperaba un )",
@@ -307,19 +307,21 @@ class AnalizadorSintactico:
                 )
         return "exito"
 
-    def instruccion_1(self):
+    def instruccion_1(self, instruccion: list = None):
         valor = None
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.PARENTESIS_APERTURA:
             # self.datos_grafica.append(actual.valor)
+            instruccion.append(actual.valor)
+            # instruccion_1 = []
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.STRING:
-                # self.datos_grafica.append(actual.valor)
+                instruccion.append(actual.valor)
+                self.datos_grafica.append(actual.valor)
                 valor = actual.valor
                 actual = self.eliminar_primero()
                 if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
-                    # self.datos_grafica.append(actual.valor)
-                    pass
+                    instruccion.append(actual.valor)
                 else:
                     self.crear_error(
                         "Se esperaba un )",
@@ -379,7 +381,7 @@ class AnalizadorSintactico:
                     )
         return valor
 
-    def instruccion_2(self):
+    def instruccion_2(self, instruccion: list = None):
         valor1 = None
         valor2 = None
         actual = self.eliminar_primero()
@@ -391,12 +393,13 @@ class AnalizadorSintactico:
                 actual.columna,
             )
             parentesis = True
+        else:
+            instruccion.append(actual.valor)
         if not parentesis:
-            # self.datos_grafica.append(actual.valor)
             actual = self.eliminar_primero()
         string = False
         if actual.tipo == TipoToken.STRING:
-            # self.datos_grafica.append(actual.valor)
+            instruccion.append(actual.valor)
             valor1 = actual.valor
         else:
             self.crear_error(
@@ -415,6 +418,8 @@ class AnalizadorSintactico:
                 actual.columna,
             )
             coma = True
+        else:
+            instruccion.append(actual.valor)
         if not coma:
             # self.datos_grafica.append(actual.valor)
             actual = self.eliminar_primero()
@@ -424,7 +429,7 @@ class AnalizadorSintactico:
             or actual.tipo == TipoToken.STRING
             or actual.tipo == TipoToken.REAL
         ):
-            # self.datos_grafica.append(actual.valor)
+            instruccion.append(actual.valor)
             valor2 = actual.valor
         else:
             self.crear_error(
@@ -442,16 +447,17 @@ class AnalizadorSintactico:
                 actual.columna,
             )
         else:
-            # self.datos_grafica.append(actual.valor)
-            pass
+            instruccion.append(actual.valor)
         return valor1, valor2
 
-    def registros(self):
+    def registros(self, asignacion: list):
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.IGUAL:
-            # self.datos_grafica.append(f"{actual.valor}")
-            # self.datos_grafica.append("declaracion R")
-            self.declaracion_r()
+            asignacion.append(actual.valor)
+            asignacion.append("declaracion_r")
+            declaracion_r = []
+            self.declaracion_r(declaracion_r=declaracion_r)
+            asignacion.append(declaracion_r)
         else:
             self.crear_error(
                 "Se esperaba un =",
@@ -460,16 +466,22 @@ class AnalizadorSintactico:
             )
             self.declaracion_r(actual)
 
-    def declaracion_r(self, actual=None):
+    def declaracion_r(self, actual=None, declaracion_r: list = None):
         # self.datos_grafica.append("")
         if actual is None:
             actual = self.eliminar_primero()
         if actual.tipo == TipoToken.CORCHETE_APERTURA:
-            # self.datos_grafica.append("[")
-            self.arreglos()
+            if declaracion_r is not None:
+                declaracion_r.append(actual.valor)
+                declaracion_r.append("arreglos")
+            arreglos = []
+            self.arreglos(arreglos=arreglos)
+            if declaracion_r is not None:
+                declaracion_r.append(arreglos)
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.CORCHETE_CERRADURA:
-                pass
+                if declaracion_r is not None:
+                    declaracion_r.append(actual.valor)
             else:
                 self.crear_error(
                     "Se esperaba un ]",
@@ -495,7 +507,7 @@ class AnalizadorSintactico:
                     actual.columna,
                 )
 
-    def arreglos(self, actual=None):
+    def arreglos(self, actual=None, arreglos: list = None):
         # self.datos_grafica.append("Arreglos")
         if actual is None:
             if len(self.lista_tokens) > 0:
@@ -512,15 +524,33 @@ class AnalizadorSintactico:
 
         if actual.tipo == TipoToken.LLAVE_APERTURA:
             self.size_list += 1
-            # self.datos_grafica.append("{")
-            self.elementos_r()
-            self.contador = 0
+            if arreglos is not None:
+                arreglos.append(actual.valor)
+                arreglos.append("Elementos_r")
+            elementos_r = []
+            self.elementos_r(elementos_r=elementos_r)
+            if arreglos is not None:
+                arreglos.append(elementos_r)
+            actual = self.eliminar_primero()
+
+            if actual.tipo == TipoToken.LLAVE_CERRADURA:
+                self.contador = 0
+                if arreglos is not None:
+                    arreglos.append(actual.valor)
+            else:
+                self.crear_error(
+                    "Se esperaba un }",
+                    actual.fila,
+                    actual.columna,
+                )
+                self.arreglos(actual)
             if (
                 len(self.lista_tokens) > 0
                 and self.lista_tokens[0].tipo == TipoToken.LLAVE_APERTURA
             ):
-                # self.datos_grafica.append("{")
-                self.arreglos()
+                arreglos1 = []
+                self.arreglos(arreglos=arreglos1)
+                arreglos.append(arreglos1)
             elif (
                 len(self.lista_tokens) > 0
                 and self.lista_tokens[0].tipo == TipoToken.CORCHETE_CERRADURA
@@ -529,12 +559,6 @@ class AnalizadorSintactico:
             else:
                 if len(self.lista_tokens) > 0:
                     self.arreglos()
-            #     self.crear_error(
-            #         "Se esperaba un {",
-            #         self.lista_tokens[0].fila,
-            #         self.lista_tokens[0].columna,
-            #     )
-            #     self.arreglos()
         else:
             self.crear_error(
                 "Se esperaba un {",
@@ -543,7 +567,17 @@ class AnalizadorSintactico:
             )
             self.size_list += 1
             self.elementos_r(actual)
-            self.contador = 0
+            if actual == TipoToken.LLAVE_CERRADURA:
+                self.contador = 0
+                if arreglos is not None:
+                    arreglos.append(actual.valor)
+            else:
+                self.crear_error(
+                    "Se esperaba un }",
+                    actual.fila,
+                    actual.columna,
+                )
+                self.elementos_r(actual)
             if (
                 len(self.lista_tokens) > 0
                 and self.lista_tokens[0].tipo == TipoToken.LLAVE_APERTURA
@@ -559,14 +593,15 @@ class AnalizadorSintactico:
                 if len(self.lista_tokens) > 0:
                     self.arreglos()
 
-    def elementos_r(self, actual=None):
+    def elementos_r(self, actual=None, elementos_r: list = None):
         if actual is None:
             actual = self.eliminar_primero()
         if actual.tipo in [TipoToken.STRING, TipoToken.ENTERO, TipoToken.REAL]:
-            # self.datos_grafica.append(f"{actual.valor}")
             valor = actual.valor
             if actual.tipo in [TipoToken.STRING]:
                 valor = valor.replace('"', "")
+            if elementos_r is not None:
+                elementos_r.append(valor)
             if self.contador < self.size:
                 self.diccionario[self.claves[self.contador]].append(valor)
                 self.contador += 1
@@ -574,8 +609,11 @@ class AnalizadorSintactico:
             if actual is None:
                 return
             if actual.tipo == TipoToken.COMA:
-                self.elementos_r()
-
+                elementos_r.append(actual.valor)
+                elementos_r.append("Elementos_r")
+                elementos_r1 = []
+                self.elementos_r(elementos_r=elementos_r1)
+                elementos_r.append(elementos_r1)
             elif actual.tipo == TipoToken.LLAVE_CERRADURA:
                 if self.contador < self.size:
                     faltantes = self.size - self.contador
@@ -589,14 +627,8 @@ class AnalizadorSintactico:
                             self.diccionario[key].pop()
                         # self.diccionario[key].pop()
                     self.size_list -= 1
-                # self.datos_grafica.append("}")
-            else:
-                self.crear_error(
-                    "Se esperaba un }",
-                    actual.fila,
-                    actual.columna,
-                )
                 self.lista_tokens.insert(0, actual)
+                return
         else:
             self.crear_error(
                 "Se esperaba un Entero | Decimal | Cadena de texto",
@@ -615,7 +647,7 @@ class AnalizadorSintactico:
             else:
                 # self.diccionario[self.claves[self.contador]].append(None)
                 # self.contador += 1
-                if self.lista_tokens > 0:
+                if len(self.lista_tokens) > 0:
                     self.elementos_r()
 
     def usar_operacion(self, tipo, valor1=None, valor2=None):
