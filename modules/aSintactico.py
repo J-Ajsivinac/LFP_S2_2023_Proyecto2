@@ -548,6 +548,7 @@ class AnalizadorSintactico:
                 len(self.lista_tokens) > 0
                 and self.lista_tokens[0].tipo == TipoToken.LLAVE_APERTURA
             ):
+                arreglos.append("arreglos")
                 arreglos1 = []
                 self.arreglos(arreglos=arreglos1)
                 arreglos.append(arreglos1)
