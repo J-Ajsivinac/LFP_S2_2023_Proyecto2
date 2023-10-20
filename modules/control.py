@@ -51,24 +51,87 @@ class Control:
 
         self.consola.insert("end", str(contador) + "\n")
 
+    def imprimir_encabezado(self):
+        largo = 0
+        largo_retornar = []
+        for i, value in enumerate(self.matriz):
+            largo = 0
+            largo += len(str(value))
+            largo += 4
+            largo_retornar.append(largo)
+            # print(largo)
+            if i == 0:
+                self.consola.insert("end", "╔")
+            self.consola.insert("end", "=" * largo)
+            if i != len(self.matriz) - 1:
+                self.consola.insert("end", "╦")
+            if i == len(self.matriz) - 1:
+                self.consola.insert("end", "╗" + "\n")
+
+        for i, value in enumerate(self.matriz):
+            valor = value.replace('"', "")
+            largo = 0
+            largo += len(str(value))
+            largo += 4
+            # print(largo)
+            if i == 0:
+                self.consola.insert("end", "║")
+            self.consola.insert("end", f"%-{largo}s" % f" {valor}")
+            if i != len(self.matriz) - 1:
+                self.consola.insert("end", "║")
+            if i == len(self.matriz) - 1:
+                self.consola.insert("end", "║" + "\n")
+
+        for i, value in enumerate(self.matriz):
+            largo = 0
+            largo += len(str(value))
+            largo += 4
+            # print(largo)
+            if i == 0:
+                self.consola.insert("end", "╠")
+            self.consola.insert("end", "=" * largo)
+            if i != len(self.matriz) - 1:
+                self.consola.insert("end", "╬")
+            if i == len(self.matriz) - 1:
+                self.consola.insert("end", "╣" + "\n")
+        return largo_retornar
+
+    def imprimir_cuerpo(self, largo_total: list):
+        llaves = list(self.matriz.keys())
+        size = len(next(iter(self.matriz.values())))
+
+        for i in range(size):
+            for j, _ in enumerate(llaves):
+                if j == 0:
+                    self.consola.insert("end", "║")
+                largo = largo_total[j]
+                self.consola.insert(
+                    "end", f"%-{largo}s" % f" {self.matriz[llaves[j]][i]}"
+                )
+                if j == len(self.matriz) - 1:
+                    self.consola.insert("end", "║" + "\n")
+                else:
+                    self.consola.insert("end", "║")
+
+        for i, value in enumerate(self.matriz):
+            largo = 0
+            largo += len(str(value))
+            largo += 4
+            # print(largo)
+            if i == 0:
+                self.consola.insert("end", "╚")
+            self.consola.insert("end", "=" * largo)
+            if i != len(self.matriz) - 1:
+                self.consola.insert("end", "╩")
+            if i == len(self.matriz) - 1:
+                self.consola.insert("end", "╝" + "\n")
+
     def datos(self):
         if len(self.matriz) == 0:
             return
-        size = len(next(iter(self.matriz.values())))
-        encabezados = "\t".join(self.matriz.keys()) + "\n"
-        self.consola.insert("end", encabezados.replace('"', "") + "\n")
-
-        for i in range(size):
-            fila = (
-                "\t".join(
-                    [
-                        str(self.matriz[encabezado][i])
-                        for encabezado in self.matriz.keys()
-                    ]
-                )
-                + "\n"
-            )
-            self.consola.insert("end", fila)
+        largo = self.imprimir_encabezado()
+        self.imprimir_cuerpo(largo)
+        # self.consola.insert("end", "╗" + "\n")
 
     def sumar(self, i_d):
         if not i_d in self.matriz or len(self.matriz) == 0:

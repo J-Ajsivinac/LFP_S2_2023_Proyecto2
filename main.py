@@ -18,16 +18,16 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Ventana Principal")
-        self.geometry("1080x668")
+        self.geometry("1100x668")
         self.resizable(0, 0)
 
         sv_ttk.set_theme("dark")
-        Contendio(self)
         self.style = ttk.Style()
         self.style.configure("TButton", font=("Montserrat SemiBold", 11), border=0)
         self.style.configure("TButton1.TButton", foreground="#c2c3c4")
         self.style.configure("TLabel", font=("Montserrat SemiBold", 11))
         self.configure(bg="#080b0f")
+        Contendio(self)
         self.mainloop()
 
 
@@ -164,6 +164,8 @@ class Contendio(ttk.Frame):
             yscrollcommand=self.vscrollbar.set,
             xscrollcommand=self.hscrollbar.set,
             wrap="none",
+            foreground="#f5f5f6",
+            selectbackground="#2b313d",
         )
         self.hscrollbar.config(command=self.text_code.xview)
         self.hscrollbar.pack(side=tk.BOTTOM, fill=tk.X)
@@ -197,6 +199,7 @@ class Contendio(ttk.Frame):
             yscrollcommand=vscrollbar.set,
             xscrollcommand=hscrollbar.set,
             state="disabled",
+            foreground="#bbbcc0",
         )
         hscrollbar.config(command=self.text_consola.xview)
         hscrollbar.pack(side=tk.BOTTOM, fill=tk.X)
@@ -246,7 +249,7 @@ class Contendio(ttk.Frame):
         sintactico.parser()
         self.errores_sin = copy.deepcopy(sintactico.errores_s)
         # sintactico.imprimir()
-        grafica = Graph(sintactico.datos_grafica)
+        # grafica = Graph(sintactico.datos_grafica)
         self.info_grafica = sintactico.datos_grafica
         # print(sintactico.datos_grafica)
         contador_temp = self.text_consola.get("1.0", "end").strip()
