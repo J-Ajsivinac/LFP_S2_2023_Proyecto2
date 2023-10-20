@@ -34,8 +34,11 @@ class Control:
         if not valor in self.matriz or len(self.matriz) == 0:
             return
         valores = self.matriz[valor]
-        promedio = sum(valores) / len(valores)
-        self.consola.insert("end", str(promedio) + "\n")
+        try:
+            promedio = sum(valores) / len(valores)
+            self.consola.insert("end", str(promedio) + "\n")
+        except Exception as _:
+            self.consola.insert("end", "Los valores no son numeros" + "\n")
 
     def contarsi(self, i_d, valor):
         if not i_d in self.matriz or len(self.matriz) == 0:

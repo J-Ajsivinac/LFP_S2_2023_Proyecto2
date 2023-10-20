@@ -262,19 +262,9 @@ class AnalizadorSintactico:
             # instruccion_1 = []
             respuesta = self.instruccion_1(instruccion=instruccion)
         elif valor.tipo in [TipoToken.R_DATOS, TipoToken.R_CONTEO]:
-            # self.datos_grafica.append(f"{valor.valor}")
             respuesta = self.instruccion_0(instruccion=instruccion)
         elif valor.tipo in [TipoToken.R_CONTARSI]:
-            # self.datos_grafica.append(f"{valor.valor}")
             respuesta, respuesta2 = self.instruccion_2(instruccion=instruccion)
-            # if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
-            #     pass
-            # else:
-            #     self.crear_error(
-            #         "Se esperaba una )",
-            #         actual.fila,
-            #         actual.columna,
-            #     )
         return respuesta, respuesta2
 
     def instruccion_0(self, instruccion: list = None):
@@ -317,7 +307,7 @@ class AnalizadorSintactico:
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.STRING:
                 instruccion.append(actual.valor)
-                self.datos_grafica.append(actual.valor)
+                # self.datos_grafica.append(actual.valor)
                 valor = actual.valor
                 actual = self.eliminar_primero()
                 if actual.tipo == TipoToken.PARENTESIS_CERRADURA:

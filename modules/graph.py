@@ -24,7 +24,7 @@ class Graph:
                 or elemento == "otro comando"
                 or elemento == "comando"
             ):
-                # self.stack.append(nivel)
+                self.stack.append(nivel)
                 self.dot.node(f"{nivel}_{self.contador_n}", str(elemento))
                 cabeza = f"{nivel}_{self.contador_n}"
                 if raiz is not None and nivel > 0:

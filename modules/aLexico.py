@@ -265,12 +265,6 @@ class AnalizadorLexico:
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x_9(cadena)
-        # else:
-        #     self.columna += 1
-        #     self.crear_error(char, self.fila, self.columna)
-        #     cadena = cadena[1:]
-        #     self.buffer = ""
-        #     self.estado = 1
         return cadena
 
     def x1_8(self, cadena):
@@ -284,11 +278,6 @@ class AnalizadorLexico:
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x1_9(cadena)
-        # else:
-        #     valor = self.buffer + char
-        #     self.crear_error(valor, self.fila, self.columna)
-        #     cadena = cadena[1:]
-        #     self.estado = 1
         return cadena
 
     def x_9(self, cadena):
