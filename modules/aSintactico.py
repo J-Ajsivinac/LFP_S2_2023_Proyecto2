@@ -55,20 +55,22 @@ class AnalizadorSintactico:
 
     def parser(self):
         if len(self.lista_tokens) > 0:
+            inicio = []
             self.datos_grafica.append("inicio")
-            self.inicio()
+            self.inicio(inicio)
+            self.datos_grafica.append(inicio)
 
-    def inicio(self):
+    def inicio(self, inicio: list):
         if len(self.lista_tokens) == 0:
             return
-        self.datos_grafica.append("comando")
+        inicio.append("comando")
         comando = []
         self.comando(comando)
-        self.datos_grafica.append(comando)
+        inicio.append(comando)
         if len(self.lista_tokens) == 0:
             return
         # self.datos_grafica.append("<")
-        self.datos_grafica.append("otro comando")
+        inicio.append("otro comando")
         self.otro_comando()
 
     def comando(self, comando: list):
@@ -139,7 +141,10 @@ class AnalizadorSintactico:
 
     def otro_comando(self):
         if len(self.lista_tokens) > 0:
-            self.inicio()
+            inicio = []
+            self.datos_grafica.append("inicio")
+            self.inicio(inicio)
+            # self.inicio()
 
     def asignacion(self, asignacion: list):
         actual = self.eliminar_primero()
@@ -164,10 +169,9 @@ class AnalizadorSintactico:
         if actual is None:
             actual = self.eliminar_primero()
         if actual.tipo == TipoToken.CORCHETE_APERTURA:
-            # self.datos_grafica.append(f"{actual.valor}")
-            # self.datos_grafica.append("<")
             if declaracion_c is not None:
                 declaracion_c.append(actual.valor)
+                declaracion_c.append("Elementos")
             elementos = []
             self.elementos(elementos=elementos)
             if declaracion_c is not None:
@@ -192,16 +196,13 @@ class AnalizadorSintactico:
 
     def elementos(self, actual=None, elementos: list = None):
         # self.datos_grafica.append("Elementos")
-        if elementos is not None:
-            elementos.append("Elementos")
         if actual is None:
             actual = self.eliminar_primero()
         if actual.tipo == TipoToken.STRING:
             # self.datos_grafica.append(f"{actual.valor}")
-            rec_elementos = []
-            rec_elementos.append(actual.valor)
+            # rec_elementos.append(actual.valor)
             if elementos is not None:
-                elementos.append(rec_elementos)
+                elementos.append(actual.valor)
             self.diccionario[actual.valor] = []
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.CORCHETE_CERRADURA or (
@@ -211,10 +212,13 @@ class AnalizadorSintactico:
                 self.lista_tokens.insert(0, actual)
                 return
             if actual.tipo == TipoToken.COMA:
+                # rec_elementos = []
+                elementos.append(actual.valor)
+                elementos.append("Elementos")
                 elementos1 = []
                 # self.datos_grafica.append("Elementos")
                 self.elementos(elementos=elementos1)
-                rec_elementos.append(elementos1)
+                elementos.append(elementos1)
             else:
                 self.crear_error(
                     "Se esperaba una ,",
