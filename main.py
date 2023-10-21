@@ -273,10 +273,6 @@ class Contendio(ttk.Frame):
         reporte.crear_reporte_tokens(self.lista_tokens, ruta_archivo)
 
     def c_reporte_errores(self):
-        if len(self.lista_tokens) == 0:
-            messagebox.showerror(message="No hay información procesada", title="Error")
-            return
-
         if len(self.errores_lex) == 0 and len(self.errores_sin) == 0:
             messagebox.showerror(message="No hay ningún tipo de errores", title="Error")
             return

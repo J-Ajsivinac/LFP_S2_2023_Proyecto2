@@ -26,12 +26,14 @@ class Control:
 
     def conteo(self):
         if len(self.matriz) == 0:
+            self.consola.insert("end", "0 \n")
             return
         valor = len(next(iter(self.matriz.values())))
         self.consola.insert("end", str(valor) + "\n")
 
     def promedio(self, valor):
         if not valor in self.matriz or len(self.matriz) == 0:
+            self.consola.insert("end", "0 \n")
             return
         valores = self.matriz[valor]
         try:
@@ -42,6 +44,7 @@ class Control:
 
     def contarsi(self, i_d, valor):
         if not i_d in self.matriz or len(self.matriz) == 0:
+            self.consola.insert("end", "0 \n")
             return
         valores = self.matriz[i_d]
         contador = 0
@@ -128,6 +131,7 @@ class Control:
 
     def datos(self):
         if len(self.matriz) == 0:
+            self.consola.insert("end", "0 \n")
             return
         largo = self.imprimir_encabezado()
         self.imprimir_cuerpo(largo)
@@ -135,6 +139,7 @@ class Control:
 
     def sumar(self, i_d):
         if not i_d in self.matriz or len(self.matriz) == 0:
+            self.consola.insert("end", "0 \n")
             return
         valores = self.matriz[i_d]
         contador = 0
@@ -145,20 +150,29 @@ class Control:
 
     def get_max(self, i_d):
         if not i_d in self.matriz or len(self.matriz) == 0:
+            self.consola.insert("end", "0 \n")
             return
         valores = self.matriz[i_d]
+        if len(valores) == 0:
+            self.consola.insert("end", "0 \n")
+            return
         maximo = max(valores)
         self.consola.insert("end", str(maximo) + "\n")
 
     def get_min(self, i_d):
         if not i_d in self.matriz or len(self.matriz) == 0:
+            self.consola.insert("end", "0 \n")
             return
         valores = self.matriz[i_d]
+        if len(valores) == 0:
+            self.consola.insert("end", "0 \n")
+            return
         minimo = min(valores)
         self.consola.insert("end", str(minimo) + "\n")
 
     def exportar(self, nombre):
         if len(self.matriz) == 0:
+            self.consola.insert("end", "No hay datos registrados \n")
             return
         nombre = nombre.replace('"', "")
         ruta_archivo = os.path.join(self.ruta, "reporte_datos.html").replace(
@@ -166,3 +180,4 @@ class Control:
         )
         rep = Reporte()
         rep.crear_reporte_datos(self.matriz, nombre, ruta_archivo)
+        self.consola.insert("end", "Reporte generado con éxito \n")

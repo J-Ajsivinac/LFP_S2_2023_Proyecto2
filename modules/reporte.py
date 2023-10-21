@@ -1,3 +1,6 @@
+import webbrowser
+
+
 class Reporte:
     def crear_reporte_tokens(self, tokens: list, ruta):
         html = """
@@ -45,6 +48,7 @@ class Reporte:
         """
         with open(ruta, "w", encoding="utf-8") as f:
             f.write(html)
+            webbrowser.open(ruta)
 
     def crear_reporte_errores(self, e_lexicos: list, e_sintacticos: list, ruta):
         html = """
@@ -113,6 +117,7 @@ class Reporte:
         """
         with open(ruta, "w", encoding="utf-8") as f:
             f.write(html)
+            webbrowser.open(ruta)
 
     def crear_reporte_datos(self, datos: dict, titulo, ruta):
         titulo = titulo.replace('"', "")
@@ -132,7 +137,7 @@ class Reporte:
                 <main>
                     <div class="contenedor">
                         <div class="titulo">
-                            <h2>{titulo}s</h2>
+                            <h2>{titulo}</h2>
                         </div>
                     <div class="contenido-reporte">
                         <table>
@@ -165,3 +170,4 @@ class Reporte:
 
         with open(ruta, "w", encoding="utf-8") as f:
             f.write(html)
+            # webbrowser.open(ruta)

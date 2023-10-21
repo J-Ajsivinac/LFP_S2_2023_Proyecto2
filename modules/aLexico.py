@@ -370,6 +370,10 @@ class AnalizadorLexico:
         return cadena
 
     def x1_12(self, cadena):
+        if cadena is None or len(cadena) == 0:
+            self.crear_error('No hay cierre de "', self.fila, self.columna)
+            self.estado = 1
+            return None
         char = cadena[0]
         if char == "'":
             self.buffer += char
@@ -385,6 +389,10 @@ class AnalizadorLexico:
         return cadena
 
     def x_13(self, cadena):
+        if cadena is None or len(cadena) == 0:
+            self.crear_error('No hay cierre de "', self.fila, self.columna)
+            self.estado = 1
+            return None
         char = cadena[0]
         if char == '"':
             self.buffer += char
@@ -398,6 +406,10 @@ class AnalizadorLexico:
         return cadena
 
     def x1_13(self, cadena):
+        if cadena is None or len(cadena) == 0:
+            self.crear_error('No hay cierre de "', self.fila, self.columna)
+            self.estado = 1
+            return None
         char = cadena[0]
         if char == "'":
             self.buffer += char
