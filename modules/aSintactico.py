@@ -221,12 +221,14 @@ class AnalizadorSintactico:
                 return
             if actual.tipo == TipoToken.COMA:
                 # rec_elementos = []
-                elementos.append(actual.valor)
-                elementos.append("Elementos")
+                if elementos is not None:
+                    elementos.append(actual.valor)
+                    elementos.append("Elementos")
                 elementos1 = []
                 # self.datos_grafica.append("Elementos")
                 self.elementos(elementos=elementos1)
-                elementos.append(elementos1)
+                if elementos is not None:
+                    elementos.append(elementos1)
             else:
                 self.crear_error(
                     "Se esperaba una ,",
@@ -310,16 +312,19 @@ class AnalizadorSintactico:
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.PARENTESIS_APERTURA:
             # self.datos_grafica.append(actual.valor)
-            instruccion.append(actual.valor)
+            if instruccion is not None:
+                instruccion.append(actual.valor)
             # instruccion_1 = []
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.STRING:
-                instruccion.append(actual.valor)
+                if instruccion is not None:
+                    instruccion.append(actual.valor)
                 # self.datos_grafica.append(actual.valor)
                 valor = actual.valor
                 actual = self.eliminar_primero()
                 if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
-                    instruccion.append(actual.valor)
+                    if instruccion is not None:
+                        instruccion.append(actual.valor)
                 else:
                     self.crear_error(
                         "Se esperaba un )",
@@ -392,12 +397,14 @@ class AnalizadorSintactico:
             )
             parentesis = True
         else:
-            instruccion.append(actual.valor)
+            if instruccion is not None:
+                instruccion.append(actual.valor)
         if not parentesis:
             actual = self.eliminar_primero()
         string = False
         if actual.tipo == TipoToken.STRING:
-            instruccion.append(actual.valor)
+            if instruccion is not None:
+                instruccion.append(actual.valor)
             valor1 = actual.valor
         else:
             self.crear_error(
@@ -417,7 +424,8 @@ class AnalizadorSintactico:
             )
             coma = True
         else:
-            instruccion.append(actual.valor)
+            if instruccion is not None:
+                instruccion.append(actual.valor)
         if not coma:
             # self.datos_grafica.append(actual.valor)
             actual = self.eliminar_primero()
@@ -427,7 +435,8 @@ class AnalizadorSintactico:
             or actual.tipo == TipoToken.STRING
             or actual.tipo == TipoToken.REAL
         ):
-            instruccion.append(actual.valor)
+            if instruccion is not None:
+                instruccion.append(actual.valor)
             valor2 = actual.valor
         else:
             self.crear_error(
@@ -445,17 +454,20 @@ class AnalizadorSintactico:
                 actual.columna,
             )
         else:
-            instruccion.append(actual.valor)
+            if instruccion is not None:
+                instruccion.append(actual.valor)
         return valor1, valor2
 
     def registros(self, asignacion: list):
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.IGUAL:
-            asignacion.append(actual.valor)
-            asignacion.append("declaracion_r")
+            if asignacion is not None:
+                asignacion.append(actual.valor)
+                asignacion.append("declaracion_r")
             declaracion_r = []
             self.declaracion_r(declaracion_r=declaracion_r)
-            asignacion.append(declaracion_r)
+            if asignacion is not None:
+                asignacion.append(declaracion_r)
         else:
             self.crear_error(
                 "Se esperaba un =",
@@ -546,10 +558,12 @@ class AnalizadorSintactico:
                 len(self.lista_tokens) > 0
                 and self.lista_tokens[0].tipo == TipoToken.LLAVE_APERTURA
             ):
-                arreglos.append("arreglos")
+                if arreglos is not None:
+                    arreglos.append("arreglos")
                 arreglos1 = []
                 self.arreglos(arreglos=arreglos1)
-                arreglos.append(arreglos1)
+                if arreglos is not None:
+                    arreglos.append(arreglos1)
             elif (
                 len(self.lista_tokens) > 0
                 and self.lista_tokens[0].tipo == TipoToken.CORCHETE_CERRADURA
@@ -607,13 +621,7 @@ class AnalizadorSintactico:
             actual = self.eliminar_primero()
             if actual is None:
                 return
-            if actual.tipo == TipoToken.COMA:
-                elementos_r.append(actual.valor)
-                elementos_r.append("Elementos_r")
-                elementos_r1 = []
-                self.elementos_r(elementos_r=elementos_r1)
-                elementos_r.append(elementos_r1)
-            elif actual.tipo == TipoToken.LLAVE_CERRADURA:
+            if actual.tipo in [TipoToken.LLAVE_CERRADURA, TipoToken.LLAVE_APERTURA]:
                 if self.contador < self.size:
                     faltantes = self.size - self.contador
                     self.crear_error(
@@ -628,6 +636,18 @@ class AnalizadorSintactico:
                     self.size_list -= 1
                 self.lista_tokens.insert(0, actual)
                 return
+            if actual.tipo == TipoToken.COMA:
+                if elementos_r is not None:
+                    elementos_r.append(actual.valor)
+                    elementos_r.append("Elementos_r")
+                elementos_r1 = []
+                self.elementos_r(elementos_r=elementos_r1)
+                if elementos_r is not None:
+                    elementos_r.append(elementos_r1)
+            else:
+                self.crear_error("se esperaba una ,", actual.fila, actual.columna)
+                self.elementos_r(actual)
+
         else:
             self.crear_error(
                 "Se esperaba un Entero | Decimal | Cadena de texto",

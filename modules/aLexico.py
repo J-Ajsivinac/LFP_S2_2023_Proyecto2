@@ -85,6 +85,11 @@ class AnalizadorLexico:
         self.columna += len(valor)
         self.estado = 1
 
+    def agregar_numero(self, tipo, valor, valor_num):
+        self.tokens.append(Token(tipo, valor_num, self.fila, self.columna))
+        self.columna += len(valor)
+        self.estado = 1
+
     def agregar_token_sin_c(self, tipo, valor):
         self.tokens.append(Token(tipo, valor, self.fila, self.columna - len(valor)))
 
@@ -211,7 +216,8 @@ class AnalizadorLexico:
             cadena = self.x_6(cadena)
         elif char in ['"', "\n", "\t", " ", ",", "}", ")"]:
             try:
-                self.agregar_token(TipoToken.ENTERO, int(self.buffer))
+                valor_num = int(self.buffer)
+                self.agregar_numero(TipoToken.ENTERO, self.buffer, valor_num)
                 self.estado = 1
                 self.buffer = ""
             except Exception as _:
@@ -230,7 +236,7 @@ class AnalizadorLexico:
             self.buffer += char
             cadena = self.x_7(cadena)
         else:
-            self.crear_error(char, self.fila, self.columna)
+            self.crear_error(char, self.fila, self.columna + len(self.buffer))
             cadena = cadena[1:]
             cadena = self.x_6(cadena)
         return cadena
@@ -243,13 +249,14 @@ class AnalizadorLexico:
             cadena = self.x_7(cadena)
         elif char in ['"', "\n", "\t", " ", ",", "}"]:
             try:
-                self.agregar_token(TipoToken.REAL, float(self.buffer))
+                valor_num = float(self.buffer)
+                self.agregar_numero(TipoToken.REAL, self.buffer, valor_num)
                 self.buffer = ""
             except Exception as _:
                 self.buffer = ""
                 self.estado = 1
         else:
-            self.crear_error(char, self.fila, self.columna)
+            self.crear_error(char, self.fila, self.columna + len(self.buffer))
             cadena = cadena[1:]
             cadena = self.x_7(cadena)
         return cadena
@@ -260,7 +267,7 @@ class AnalizadorLexico:
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x_11(cadena)
-            self.com_abierto = False
+            # self.com_abierto = False
         else:
             cadena = cadena[1:]
             self.buffer += char
@@ -273,7 +280,7 @@ class AnalizadorLexico:
             self.buffer += char
             cadena = cadena[1:]
             cadena = self.x1_11(cadena)
-            self.com_abierto = False
+            # self.com_abierto = False
         else:
             cadena = cadena[1:]
             self.buffer += char
@@ -354,6 +361,7 @@ class AnalizadorLexico:
         if cadena is None or len(cadena) == 0:
             self.crear_error('No hay cierre de "', self.fila, self.columna)
             self.estado = 1
+            self.com_abierto = False
             return None
         char = cadena[0]
         if char == '"':
@@ -373,6 +381,7 @@ class AnalizadorLexico:
         if cadena is None or len(cadena) == 0:
             self.crear_error('No hay cierre de "', self.fila, self.columna)
             self.estado = 1
+            self.com_abierto = False
             return None
         char = cadena[0]
         if char == "'":
@@ -392,6 +401,7 @@ class AnalizadorLexico:
         if cadena is None or len(cadena) == 0:
             self.crear_error('No hay cierre de "', self.fila, self.columna)
             self.estado = 1
+            self.com_abierto = False
             return None
         char = cadena[0]
         if char == '"':
@@ -428,6 +438,7 @@ class AnalizadorLexico:
             self.buffer += char
             cadena = cadena[1:]
             self.agregar_token(TipoToken.COMENTARIO_M, self.buffer)
+            self.com_abierto = False
             self.buffer = ""
         else:
             self.crear_error(self.buffer, self.fila, self.columna)
@@ -443,6 +454,7 @@ class AnalizadorLexico:
             cadena = cadena[1:]
             self.agregar_token(TipoToken.COMENTARIO_M, self.buffer)
             self.buffer = ""
+            self.com_abierto = False
         else:
             self.com_abierto = False
             self.crear_error(char, self.fila, self.columna)
