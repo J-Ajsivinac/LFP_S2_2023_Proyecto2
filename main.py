@@ -249,6 +249,7 @@ class Contendio(ttk.Frame):
         sintactico.parser()
         self.errores_sin = copy.deepcopy(sintactico.errores_s)
         # sintactico.imprimir()
+        self.info_grafica = sintactico.datos_grafica
         # grafica = Graph(sintactico.datos_grafica)
         self.info_grafica = sintactico.datos_grafica
         # print(sintactico.datos_grafica)
@@ -288,7 +289,8 @@ class Contendio(ttk.Frame):
         if len(self.lista_tokens) == 0:
             messagebox.showerror(message="No hay información procesada", title="Error")
             return
-        print(self.info_grafica)
+        # print(self.info_grafica)
+        grafica = Graph(self.info_grafica)
 
 
 if __name__ == "__main__":

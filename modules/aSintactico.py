@@ -7,8 +7,9 @@ import copy
 
 class AnalizadorSintactico:
     def __init__(self, lista_tokens, ctrl: Control):
-        self.lista_tokens = lista_tokens
-        self.copia = copy.deepcopy(lista_tokens)
+        self.tokens_originales = lista_tokens
+        self.lista_tokens = self.eliminar_comentario()
+        self.copia = copy.deepcopy(self.lista_tokens)
         self.errores_s = []
         self.salidas_asig = [
             TipoToken.COMENTARIO,
@@ -36,6 +37,13 @@ class AnalizadorSintactico:
         self.size = 0
         self.size_list = 0
         self.datos_grafica = []
+
+    def eliminar_comentario(self):
+        nueva_lista = []
+        for value in self.tokens_originales:
+            if value.tipo not in [TipoToken.COMENTARIO, TipoToken.COMENTARIO_M]:
+                nueva_lista.append(value)
+        return nueva_lista
 
     def eliminar_primero(self):
         try:
