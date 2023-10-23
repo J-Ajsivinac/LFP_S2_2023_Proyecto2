@@ -326,11 +326,11 @@ Está clase es la encargada de realizar el analisis sintactico, el analizador in
 <ARREGLOS> ::= { <ELEMENTOS R> } <ARREGLOS> | { <ELEMENTOS R> }
 <ELEMENTOS R> ::= TipoToken.STRING | TipoToken.ENTERO | TipoToken.REAL | ε
 <INSTRUCCION> ::= 
-TipoToken.R_IMPRIMIR ( <ELEMENTO PARAMETRO> ) |
-TipoToken.R_IMPRIMIRLN ( <ELEMENTO PARAMETRO> ) |
+TipoToken.R_IMPRIMIR ( TipoToken.STRING ) |
+TipoToken.R_IMPRIMIRLN ( TipoToken.STRING ) |
 TipoToken.R_CONTEO ( ) |
 TipoToken.R_PROMEDIO ( TipoToken.STRING ) |
-TipoToken.R_CONTARSI ( TipoToken.STRING ) |
+TipoToken.R_CONTARSI ( <PARAMETROS> ) |
 TipoToken.R_DATOS ( ) |
 TipoToken.R_SUMAR ( TipoToken.STRING ) |
 TipoToken.R_MAX ( TipoToken.STRING ) |
@@ -359,6 +359,16 @@ Este método se encarga de generar el arbol de derivación, junto con abrir la a
 </blockquote>
 <br>
 
+<h3>Clase Reporte</h3>
+Es la encargagada de generar los reportes de:
+* Tokens
+* Errores
+* Datos
+cada uno en formato HTML
+
+<h3>metódo cargar_json</h3>
+Se encarga de abrir una ventana donde se puede elegir un archivo con extensión `bizdata` para poder realizar los diferentes analisis, a su vez que puede generar los reportes elegidos por el usuario
+
 
 ## 📟 Instalación
 Descargue el código o bien clone el repositorio en una carpeta.
@@ -370,11 +380,11 @@ git clone https://github.com/J-Ajsivinac/LFP_S2_2023_Proyecto2_202200135
 ```
 
 ## 📷 Capturas
-![Captura 1](https://i.imgur.com/tZcn97A.png)
+![Captura 1](https://i.imgur.com/7IUQk3y.png)
 <p align="center">Ventana Principal</p>
 
-![Captura 2](https://i.imgur.com/hPtFdYR.png)
+![Captura 2](https://i.imgur.com/cTXQG7y.png)
 <p align="center">Informe de Tokens encontrados</p>
 
-![Captura 3](https://i.imgur.com/FBkikAX.png)
+![Captura 3](https://i.imgur.com/1xhHGCX.png)
 <p align="center">Gráfica Generada</p>
