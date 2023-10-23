@@ -1,7 +1,6 @@
 from modules.Abstract.token import Token
 from modules.Abstract.error import Error
 from modules.Tipo import TipoToken
-import re
 
 
 class AnalizadorLexico:
@@ -13,18 +12,18 @@ class AnalizadorLexico:
         self.columna = 1
         self.abierto = False
         self.patrones = [
-            (re.compile(r"claves", re.I), TipoToken.R_CLAVES),
-            (re.compile(r"registros", re.I), TipoToken.R_REGISTROS),
-            (re.compile(r"imprimir", re.I), TipoToken.R_IMPRIMIR),
-            (re.compile(r"imprimirln", re.I), TipoToken.R_IMPRIMIRLN),
-            (re.compile(r"conteo", re.I), TipoToken.R_CONTEO),
-            (re.compile(r"promedio", re.I), TipoToken.R_PROMEDIO),
-            (re.compile(r"contarsi", re.I), TipoToken.R_CONTARSI),
-            (re.compile(r"datos", re.I), TipoToken.R_DATOS),
-            (re.compile(r"sumar", re.I), TipoToken.R_SUMAR),
-            (re.compile(r"max", re.I), TipoToken.R_MAX),
-            (re.compile(r"min", re.I), TipoToken.R_MIN),
-            (re.compile(r"exportarreporte", re.I), TipoToken.R_EXPORTAR),
+            ("claves", TipoToken.R_CLAVES),
+            ("registros", TipoToken.R_REGISTROS),
+            ("imprimir", TipoToken.R_IMPRIMIR),
+            ("imprimirln", TipoToken.R_IMPRIMIRLN),
+            ("conteo", TipoToken.R_CONTEO),
+            ("promedio", TipoToken.R_PROMEDIO),
+            ("contarsi", TipoToken.R_CONTARSI),
+            ("datos", TipoToken.R_DATOS),
+            ("sumar", TipoToken.R_SUMAR),
+            ("max", TipoToken.R_MAX),
+            ("min", TipoToken.R_MIN),
+            ("exportarreporte", TipoToken.R_EXPORTAR),
         ]
         self.buffer = ""
         self.es_decimal = False
@@ -185,8 +184,7 @@ class AnalizadorLexico:
         elif char in ['"', "\n", "\t", " ", ",", "}", "{", "=", "(", ")"]:
             token_type = None
             for pat, tipo in self.patrones:
-                if re.fullmatch(pat, self.buffer):
-                    # if pat == self.buffer:
+                if pat.lower() == self.buffer.lower():
                     token_type = tipo
                     break
             if token_type:

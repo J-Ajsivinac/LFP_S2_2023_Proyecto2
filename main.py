@@ -112,7 +112,6 @@ class Contendio(ttk.Frame):
         panel_medio.rowconfigure(0, weight=1)
 
         panel_izq = tk.Frame(panel_medio)
-        # panel_izq.configure(bg="#ff7b72")
         self.crear_panel_izq(panel_izq)
 
         panel_izq.grid(row=0, column=0, sticky=tk.NSEW, padx=10)
@@ -248,17 +247,12 @@ class Contendio(ttk.Frame):
         sintactico = AnalizadorSintactico(lista, self.controlador)
         sintactico.parser()
         self.errores_sin = copy.deepcopy(sintactico.errores_s)
-        # sintactico.imprimir()
         self.info_grafica = sintactico.datos_grafica
-        # grafica = Graph(sintactico.datos_grafica)
-        self.info_grafica = sintactico.datos_grafica
-        # print(sintactico.datos_grafica)
         contador_temp = self.text_consola.get("1.0", "end").strip()
         if contador_temp:
             contador_temp = contador_temp.count("\n") + 1
         else:
             contador_temp = 0
-        # print(contador_lineas, contador_temp)
         if contador_temp > contador_lineas:
             self.text_consola.insert(tk.END, "\n  \n")
         self.text_consola.config(state="disabled")
