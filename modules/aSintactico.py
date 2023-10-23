@@ -239,12 +239,7 @@ class AnalizadorSintactico:
                     self.elementos(actual)
 
         else:
-            self.crear_error(
-                "Se esperaba una cadena de texto",
-                actual.fila,
-                actual.columna,
-            )
-            if actual.tipo not in [
+            if actual.tipo in [
                 TipoToken.LLAVE_CERRADURA,
                 TipoToken.R_CLAVES,
                 TipoToken.R_REGISTROS,
@@ -255,6 +250,11 @@ class AnalizadorSintactico:
                 self.lista_tokens.insert(0, actual)
                 return
             else:
+                self.crear_error(
+                    "Se esperaba una cadena de texto",
+                    actual.fila,
+                    actual.columna,
+                )
                 self.elementos()
 
     def instruccion(self, valor, instruccion: list):
@@ -312,6 +312,8 @@ class AnalizadorSintactico:
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.PARENTESIS_APERTURA:
             # self.datos_grafica.append(actual.valor)
+            fila_comando = actual.fila
+            columna_comando = actual.columna
             if instruccion is not None:
                 instruccion.append(actual.valor)
             # instruccion_1 = []
@@ -332,11 +334,21 @@ class AnalizadorSintactico:
                         actual.columna,
                     )
             else:
+                fila = actual.fila if actual.fila == fila_comando else fila_comando
+                columna = (
+                    actual.columna
+                    if actual.columna == columna_comando
+                    else columna_comando + 1
+                )
                 self.crear_error(
                     "Se esperaba una cadena de texto",
-                    actual.fila,
-                    actual.columna,
+                    fila,
+                    columna,
                 )
+                if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
+                    self.lista_tokens.insert(0, actual)
+                    return None
+
                 if len(self.lista_tokens) == 0:
                     return
                 if actual.tipo == TipoToken.PARENTESIS_CERRADURA:

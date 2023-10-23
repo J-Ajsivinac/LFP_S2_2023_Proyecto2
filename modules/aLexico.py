@@ -267,6 +267,15 @@ class AnalizadorLexico:
             cadena = self.x_11(cadena)
             # self.com_abierto = False
         else:
+            if char == "\n":
+                self.crear_error('falta de cierre "', self.fila, self.columna)
+                self.fila += 1
+                self.columna = 1
+                self.estado = 1
+                cadena = cadena[1:]
+                self.com_abierto = False
+                self.buffer = ""
+                return cadena
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x_9(cadena)
@@ -280,6 +289,15 @@ class AnalizadorLexico:
             cadena = self.x1_11(cadena)
             # self.com_abierto = False
         else:
+            if char == "\n":
+                self.crear_error('falta de cierre "', self.fila, self.columna)
+                self.fila += 1
+                self.columna = 1
+                self.estado = 1
+                cadena = cadena[1:]
+                self.com_abierto = False
+                self.buffer = ""
+                return cadena
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x1_9(cadena)
@@ -299,10 +317,13 @@ class AnalizadorLexico:
             self.buffer = ""
         else:
             if char == "\n":
+                self.crear_error('falta de cierre "', self.fila, self.columna)
                 self.fila += 1
                 self.columna = 1
-                self.crear_error('falta de cierre "', self.fila, self.columna)
                 self.estado = 1
+                cadena = cadena[1:]
+                self.com_abierto = False
+                self.buffer = ""
                 return cadena
             cadena = cadena[1:]
             self.buffer += char
@@ -318,11 +339,20 @@ class AnalizadorLexico:
         char = cadena[0]
         if char == "'":
             self.buffer += char
-            cadena = cadena[1:]
             self.agregar_token(TipoToken.STRING, self.buffer)
+            cadena = cadena[1:]
             self.buffer = ""
             self.com_abierto = False
         else:
+            if char == "\n":
+                self.crear_error('falta de cierre "', self.fila, self.columna)
+                self.fila += 1
+                self.columna = 1
+                self.estado = 1
+                cadena = cadena[1:]
+                self.com_abierto = False
+                self.buffer = ""
+                return cadena
             cadena = cadena[1:]
             self.buffer += char
             cadena = self.x_9(cadena)

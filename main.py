@@ -281,6 +281,7 @@ class Contendio(ttk.Frame):
             return
         # print(self.info_grafica)
         grafica = Graph(self.info_grafica)
+        grafica.generar()
 
 
 if __name__ == "__main__":
