@@ -9,7 +9,7 @@ class Graph:
         self.i = 0
         self.contador_n = 0
         self.stack = []
-        print(self.datos)
+        # print(self.datos)
         self.graficar_AST(self.datos)
 
     def graficar_AST(self, datos: list, raiz=None, nivel=0):

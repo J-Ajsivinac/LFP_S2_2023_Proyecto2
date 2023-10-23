@@ -223,7 +223,6 @@ class Contendio(ttk.Frame):
         if self.archivo_actual:
             _, nombre = os.path.split(self.archivo_actual)
             self.lbl_nombre.config(text=nombre)
-            # self.actualizar_contador()
 
     def analizar_datos(self):
         texto = self.text_code.get("1.0", "end")

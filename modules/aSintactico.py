@@ -311,7 +311,6 @@ class AnalizadorSintactico:
         valor = None
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.PARENTESIS_APERTURA:
-            # self.datos_grafica.append(actual.valor)
             fila_comando = actual.fila
             columna_comando = actual.columna
             if instruccion is not None:
@@ -321,7 +320,7 @@ class AnalizadorSintactico:
             if actual.tipo == TipoToken.STRING:
                 if instruccion is not None:
                     instruccion.append(actual.valor)
-                # self.datos_grafica.append(actual.valor)
+
                 valor = actual.valor
                 actual = self.eliminar_primero()
                 if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
@@ -399,6 +398,8 @@ class AnalizadorSintactico:
     def instruccion_2(self, instruccion: list = None):
         valor1 = None
         valor2 = None
+        parametros = None
+        elemento_parametro = None
         actual = self.eliminar_primero()
         parentesis = False
         if actual.tipo != TipoToken.PARENTESIS_APERTURA:
@@ -411,12 +412,14 @@ class AnalizadorSintactico:
         else:
             if instruccion is not None:
                 instruccion.append(actual.valor)
+                instruccion.append("Parametros")
+                parametros = []
         if not parentesis:
             actual = self.eliminar_primero()
         string = False
         if actual.tipo == TipoToken.STRING:
-            if instruccion is not None:
-                instruccion.append(actual.valor)
+            if parametros is not None:
+                parametros.append(actual.valor)
             valor1 = actual.valor
         else:
             self.crear_error(
@@ -436,8 +439,8 @@ class AnalizadorSintactico:
             )
             coma = True
         else:
-            if instruccion is not None:
-                instruccion.append(actual.valor)
+            if parametros is not None:
+                parametros.append(actual.valor)
         if not coma:
             # self.datos_grafica.append(actual.valor)
             actual = self.eliminar_primero()
@@ -447,12 +450,14 @@ class AnalizadorSintactico:
             or actual.tipo == TipoToken.STRING
             or actual.tipo == TipoToken.REAL
         ):
-            if instruccion is not None:
-                instruccion.append(actual.valor)
+            if parametros is not None:
+                parametros.append("Elemento Paramatro")
+            elemento_parametro = []
+            elemento_parametro.append(actual.valor)
             valor2 = actual.valor
         else:
             self.crear_error(
-                "Se esperaba un entero | cadena de text | decimal",
+                "Se esperaba un entero | cadena de texto | decimal",
                 actual.fila,
                 actual.columna,
             )
@@ -467,7 +472,11 @@ class AnalizadorSintactico:
             )
         else:
             if instruccion is not None:
-                instruccion.append(actual.valor)
+                if parametros is not None:
+                    parametros.append(elemento_parametro)
+                if instruccion is not None:
+                    instruccion.append(parametros)
+                    instruccion.append(actual.valor)
         return valor1, valor2
 
     def registros(self, asignacion: list):
