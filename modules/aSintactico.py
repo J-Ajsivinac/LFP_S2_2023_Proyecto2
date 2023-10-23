@@ -451,7 +451,7 @@ class AnalizadorSintactico:
             or actual.tipo == TipoToken.REAL
         ):
             if parametros is not None:
-                parametros.append("Elemento Paramatro")
+                parametros.append("Elemento Parametro")
             elemento_parametro = []
             elemento_parametro.append(actual.valor)
             valor2 = actual.valor
