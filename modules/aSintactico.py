@@ -586,6 +586,9 @@ class AnalizadorSintactico:
                     actual.fila,
                     actual.columna,
                 )
+                if actual.tipo in self.reservadas or actual.tipo in self.reservadas:
+                    self.lista_tokens.insert(0, actual)
+                    return
                 self.arreglos(actual)
             if (
                 len(self.lista_tokens) > 0
@@ -672,6 +675,7 @@ class AnalizadorSintactico:
                         actual.fila,
                         actual.columna - 1,
                     )
+                    size_temp = len(next(iter(self.diccionario.values())))
                     for key in self.claves:
                         if len(self.diccionario[key]) == self.size_list:
                             self.diccionario[key].pop()
@@ -697,18 +701,30 @@ class AnalizadorSintactico:
                 actual.fila,
                 actual.columna,
             )
-            if actual.tipo not in [
+            if actual.tipo in [
+                TipoToken.LLAVE_APERTURA,
                 TipoToken.LLAVE_CERRADURA,
                 TipoToken.R_CLAVES,
                 TipoToken.R_REGISTROS,
                 TipoToken.COMENTARIO_M,
                 TipoToken.COMENTARIO,
             ]:
+                if self.contador < self.size:
+                    faltantes = self.size - self.contador
+                    self.crear_error(
+                        f"Falta {faltantes} valores en el arreglo",
+                        actual.fila,
+                        actual.columna - 1,
+                    )
+                    size_temp = len(next(iter(self.diccionario.values())))
+                    for key in self.claves:
+                        if len(self.diccionario[key]) == self.size_list:
+                            self.diccionario[key].pop()
+                        # self.diccionario[key].pop()
+                    self.size_list -= 1
                 self.lista_tokens.insert(0, actual)
                 return
             else:
-                # self.diccionario[self.claves[self.contador]].append(None)
-                # self.contador += 1
                 if len(self.lista_tokens) > 0:
                     self.elementos_r()
 
