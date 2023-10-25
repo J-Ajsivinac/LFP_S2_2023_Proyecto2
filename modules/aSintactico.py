@@ -51,7 +51,11 @@ class AnalizadorSintactico:
         except Exception as _:
             if not self.es_ultimo:
                 ultimo = self.copia[-1]
-                ultimo.columna += len(ultimo.valor)
+                if isinstance(ultimo.valor, str):
+                    # ultimo.valor = ultimo.valor.replace('"', '')
+                    ultimo.columna += len(ultimo.valor)
+                elif isinstance(ultimo.valor, (int, float)):
+                    ultimo.columna += len(str(ultimo.valor))
                 self.es_ultimo = True
                 return ultimo
             return None
@@ -510,6 +514,8 @@ class AnalizadorSintactico:
             if declaracion_r is not None:
                 declaracion_r.append(arreglos)
             actual = self.eliminar_primero()
+            if actual is None:
+                return
             if actual.tipo == TipoToken.CORCHETE_CERRADURA:
                 if declaracion_r is not None:
                     declaracion_r.append(actual.valor)
@@ -563,7 +569,13 @@ class AnalizadorSintactico:
             if arreglos is not None:
                 arreglos.append(elementos_r)
             actual = self.eliminar_primero()
-
+            if actual is None:
+                self.crear_error(
+                    "Se esperaba un }",
+                    self.copia[-1].fila,
+                    self.copia[-1].columna,
+                )
+                return
             if actual.tipo == TipoToken.LLAVE_CERRADURA:
                 self.contador = 0
                 if arreglos is not None:
@@ -601,7 +613,11 @@ class AnalizadorSintactico:
             )
             self.size_list += 1
             self.elementos_r(actual)
-            if actual == TipoToken.LLAVE_CERRADURA:
+            if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
+                self.lista_tokens.insert(0, actual)
+                return
+
+            if actual.tipo == TipoToken.LLAVE_CERRADURA:
                 self.contador = 0
                 if arreglos is not None:
                     arreglos.append(actual.valor)
@@ -642,7 +658,13 @@ class AnalizadorSintactico:
             actual = self.eliminar_primero()
             if actual is None:
                 return
-            if actual.tipo in [TipoToken.LLAVE_CERRADURA, TipoToken.LLAVE_APERTURA]:
+            if (
+                actual.tipo in [TipoToken.LLAVE_CERRADURA, TipoToken.LLAVE_APERTURA]
+                or actual.tipo in self.salidas_asig
+                or actual.tipo in self.reservadas
+            ):
+                if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
+                    self.lista_tokens.insert(0, actual)
                 if self.contador < self.size:
                     faltantes = self.size - self.contador
                     self.crear_error(

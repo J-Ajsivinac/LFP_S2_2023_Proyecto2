@@ -196,7 +196,7 @@ class AnalizadorLexico:
                 self.estado = 1
                 self.buffer = ""
         else:
-            self.crear_error(char, self.fila, self.columna)
+            self.crear_error(char, self.fila, self.columna + len(self.buffer))
             cadena = cadena[1:]
             cadena = self.x_3(cadena)
             # self.estado = 1
@@ -222,7 +222,7 @@ class AnalizadorLexico:
                 self.estado = 1
                 self.buffer = ""
         else:
-            self.crear_error(char, self.fila, self.columna)
+            self.crear_error(char, self.fila, self.columna + len(self.buffer))
             cadena = cadena[1:]
             cadena = self.x_5(cadena)
         return cadena
