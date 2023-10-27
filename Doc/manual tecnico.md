@@ -313,6 +313,10 @@ ER: `#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | "["  | “  |  "
 
 (#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | "["  | “  |  ","  |  "]"  |  Registros  |   "{"  |  "}"  |  [0-9]+  | [0-9]+.[0-9]+ |  imprimir |  imprimirln |  "("  |   ")"  |; |  datos  | conteo |  Promedio  | contarsi  |  sumar |  max  | min |  exportarReporte | "[L\|D\|CE]+" | "=")$
 
+**Arbol de sintaxis**
+
+<img src="img/../../img/arbol%20proyecto.png" alt="Método del arbol">
+
 **Tabla Follow Pos**
 
 | Hoja | Terminal | Follow Pos  |
@@ -372,6 +376,8 @@ ER: `#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | "["  | “  |  "
 | X13={12}                                      |      |      |      |      | 13   |      |      |      |      |      |      |      |      |      |      |
 | X14={13}                                      |      |      |      |      | X10  |      |      |      |      |      |      |      |      |      |      |
 
+**AFD**
+<img src="img/../../img/automantapro.png" alt="afd">
 
 </blockquote>
 
