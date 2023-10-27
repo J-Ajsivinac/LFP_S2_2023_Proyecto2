@@ -18,6 +18,7 @@
 - [⚙ Tecnologías Utilizadas](#-tecnologías-utilizadas)
 - [⚽ Objetivos](#-objetivos)
 - [🧮 Como funciona](#-como-funciona)
+  - [Método del árbol](#método-del-árbol)
 - [📟 Instalación](#-instalación)
 - [📷 Capturas](#-capturas)
 
@@ -306,7 +307,72 @@ Para los estados del analizador se utilizaron las siguientes expresiones regular
 | Llave de cerradura        | un caracter '}'                        | }                  | TipoToken.LLAVE_CERRADURA       |
 | comaa                     | un caracter ','                        | ,                  | TipoToken.COMA                  |
 
-ER: `#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | [  | “  |  ,  |  ]  |  Registros  |   {  |  }  |  [0-9]+  | [0-9]+.[0-9]+ |  imprimir |  imprimirln |  (  |   )  |; |  datos  | conteo |  Promedio  | contarsi  |  sumar |  max  | min |  exportarReporte | =`
+ER: `#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | "["  | “  |  ","  |  "]"  |  Registros  |   "{"  |  "}"  |  [0-9]+  | [0-9]+.[0-9]+ |  imprimir |  imprimirln |  "("  |   ")"  |; |  datos  | conteo |  Promedio  | contarsi  |  sumar |  max  | min |  exportarReporte | "[L\|D\|CE]+" | "=" `
+
+### Método del árbol
+
+(#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | "["  | “  |  ","  |  "]"  |  Registros  |   "{"  |  "}"  |  [0-9]+  | [0-9]+.[0-9]+ |  imprimir |  imprimirln |  "("  |   ")"  |; |  datos  | conteo |  Promedio  | contarsi  |  sumar |  max  | min |  exportarReporte | "[L\|D\|CE]+" | "=")$
+
+**Tabla Follow Pos**
+
+| Hoja | Terminal | Follow Pos  |
+| :--- | :------- | :---------- |
+| 1    | #        | 2,3,4,45    |
+| 2    | L        | 2,3,4,45    |
+| 3    | D        | 2,3,4,45    |
+| 4    | CE       | 2,3,4,45    |
+| 5    | "        | 6           |
+| 6    | "        | 7           |
+| 7    | "        | 8,9,10,11   |
+| 8    | L        | 8,9,10,11   |
+| 9    | D        | 8,9,10,11   |
+| 10   | CE1      | 8,9,10,11   |
+| 11   | "        | 12          |
+| 12   | "        | 13          |
+| 13   | "        | 45          |
+| 14   | L        | 15,16,17    |
+| 15   | L        | 15,16,17    |
+| 16   | D        | 15,16,17,45 |
+| 17   | CE       | 15,16,17,45 |
+| 18   | "        | 19          |
+| 19   | L        | 20,21,22,23 |
+| 20   | L        | 20,21,22,23 |
+| 21   | D        | 20,21,22,23 |
+| 22   | CE       | 20,21,22,23 |
+| 23   | "        | 45          |
+| 24   | D        | 24,25,45    |
+| 25   | .        | 26          |
+| 26   | D        | 26,45       |
+| 27   | [        | 45          |
+| 28   | ]        | 45          |
+| 29   | {        | 45          |
+| 30   | }        | 45          |
+| 31   | ,        | 45          |
+| 32   | (        | 45          |
+| 33   | )        | 45          |
+| 34   | ;        | 45          |
+| 35   | =        | 45          |
+
+**Tabla de transiciones**
+
+| Estados                                       | #    | L    | D    | CE   | “    | ,    | [    | ]    | {    | }    | .    | (    | )    | ;    | =    |
+| :-------------------------------------------- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| X1 ={1,5,14,18,24,27,28,29,30,31,32,33,34,35} | X2   | X3   | X5   |      | X8   | X10  | X10  | X10  | X10  | X10  |      | X10  | X10  | X10  | X10  |
+| X2={2,3,4,36}                                 |      | X2   | X2   | X2   |      |      |      |      |      |      |      |      |      |      |      |
+| X3={2,3,4,15,16,17}                           |      | X4   | X4   | X4   |      |      |      |      |      |      |      |      |      |      |      |
+| X4= {2,3,4,36,15,16,17}                       |      | X4   | X4   | X4   |      |      |      |      |      |      |      |      |      |      |      |
+| X5={24,25,36}                                 |      |      | X5   |      |      |      |      |      |      |      | X6   |      |      |      |      |
+| X6 = {26}                                     |      |      | X7   |      |      |      |      |      |      |      |      |      |      |      |      |
+| X7 = {26,36}                                  |      |      | X7   |      |      |      |      |      |      |      |      |      |      |      |      |
+| X8={6,19}                                     |      | X9   |      |      | X11  |      |      |      |      |      |      |      |      |      |      |
+| X9={20,21,22,23}                              |      | X9   | X9   | X9   | X10  |      |      |      |      |      |      |      |      |      |      |
+| X10={36}                                      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| X11={7}                                       |      |      |      |      | X12  |      |      |      |      |      |      |      |      |      |      |
+| X12={8,9,10,11}                               |      | X12  | X12  | X12  | X13  |      |      |      |      |      |      |      |      |      |      |
+| X13={12}                                      |      |      |      |      | 13   |      |      |      |      |      |      |      |      |      |      |
+| X14={13}                                      |      |      |      |      | X10  |      |      |      |      |      |      |      |      |      |      |
+
+
 </blockquote>
 
 <br>
