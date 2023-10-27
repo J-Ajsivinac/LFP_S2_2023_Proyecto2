@@ -52,7 +52,6 @@ class AnalizadorSintactico:
             if not self.es_ultimo:
                 ultimo = self.copia[-1]
                 if isinstance(ultimo.valor, str):
-                    # ultimo.valor = ultimo.valor.replace('"', '')
                     ultimo.columna += len(ultimo.valor)
                 elif isinstance(ultimo.valor, (int, float)):
                     ultimo.columna += len(str(ultimo.valor))
@@ -81,8 +80,6 @@ class AnalizadorSintactico:
         inicio.append(comando)
         if len(self.lista_tokens) == 0:
             return
-        # self.datos_grafica.append("<")
-        # inicio.append("otro comando")
         self.otro_comando(inicio)
 
     def comando(self, comando: list):
@@ -156,19 +153,15 @@ class AnalizadorSintactico:
             self.inicio(inicio_2)
             otro_comando.append(inicio_2)
             inicio.append(otro_comando)
-            # self.inicio()
 
     def asignacion(self, asignacion: list):
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.IGUAL:
             asignacion.append(actual.valor)
-            # self.datos_grafica.append(f"{actual.valor}")
-            # self.datos_grafica.append("<")
             asignacion.append("declaracion_c")
             declaracion_c = []
             self.declaracion_c(declaracion_c=declaracion_c)
             asignacion.append(declaracion_c)
-            # self.datos_grafica.append(">")
         else:
             self.crear_error(
                 "Se esperaba un = ",
@@ -207,29 +200,31 @@ class AnalizadorSintactico:
             self.elementos(actual)
 
     def elementos(self, actual=None, elementos: list = None):
-        # self.datos_grafica.append("Elementos")
         if actual is None:
             actual = self.eliminar_primero()
         if actual.tipo == TipoToken.STRING:
-            # self.datos_grafica.append(f"{actual.valor}")
-            # rec_elementos.append(actual.valor)
             if elementos is not None:
                 elementos.append(actual.valor)
-            self.diccionario[actual.valor] = []
+            valor_key = actual.valor.replace('"', "")
+            if len(valor_key.strip()) != 0:
+                self.diccionario[actual.valor] = []
+            else:
+                self.crear_error(
+                    "La clave no puede ser vacia",
+                    actual.fila,
+                    actual.columna,
+                )
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.CORCHETE_CERRADURA or (
                 len(self.lista_tokens) == 0 and actual.tipo != TipoToken.COMA
             ):
-                # self.datos_grafica.append(">")
                 self.lista_tokens.insert(0, actual)
                 return
             if actual.tipo == TipoToken.COMA:
-                # rec_elementos = []
                 if elementos is not None:
                     elementos.append(actual.valor)
                     elementos.append("Elementos")
                 elementos1 = []
-                # self.datos_grafica.append("Elementos")
                 self.elementos(elementos=elementos1)
                 if elementos is not None:
                     elementos.append(elementos1)
@@ -273,7 +268,6 @@ class AnalizadorSintactico:
             TipoToken.R_MIN,
             TipoToken.R_EXPORTAR,
         ]:
-            # instruccion_1 = []
             respuesta = self.instruccion_1(instruccion=instruccion)
         elif valor.tipo in [TipoToken.R_DATOS, TipoToken.R_CONTEO]:
             respuesta = self.instruccion_0(instruccion=instruccion)
@@ -284,7 +278,6 @@ class AnalizadorSintactico:
     def instruccion_0(self, instruccion: list = None):
         actual = self.eliminar_primero()
         if actual.tipo == TipoToken.PARENTESIS_APERTURA:
-            # self.datos_grafica.append(actual.valor)
             instruccion.append(actual.valor)
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
@@ -319,7 +312,6 @@ class AnalizadorSintactico:
             columna_comando = actual.columna
             if instruccion is not None:
                 instruccion.append(actual.valor)
-            # instruccion_1 = []
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.STRING:
                 if instruccion is not None:
@@ -446,7 +438,6 @@ class AnalizadorSintactico:
             if parametros is not None:
                 parametros.append(actual.valor)
         if not coma:
-            # self.datos_grafica.append(actual.valor)
             actual = self.eliminar_primero()
         entero = False
         if (
@@ -502,7 +493,6 @@ class AnalizadorSintactico:
             self.declaracion_r(actual)
 
     def declaracion_r(self, actual=None, declaracion_r: list = None):
-        # self.datos_grafica.append("")
         if actual is None:
             actual = self.eliminar_primero()
         if actual.tipo == TipoToken.CORCHETE_APERTURA:
@@ -516,6 +506,9 @@ class AnalizadorSintactico:
             actual = self.eliminar_primero()
             if actual is None:
                 return
+            if actual.tipo == TipoToken.LLAVE_APERTURA:
+                self.arreglos(actual)
+                actual = self.eliminar_primero()
             if actual.tipo == TipoToken.CORCHETE_CERRADURA:
                 if declaracion_r is not None:
                     declaracion_r.append(actual.valor)
@@ -545,7 +538,6 @@ class AnalizadorSintactico:
                 )
 
     def arreglos(self, actual=None, arreglos: list = None):
-        # self.datos_grafica.append("Arreglos")
         if actual is None:
             if len(self.lista_tokens) > 0:
                 actual = self.eliminar_primero()
@@ -616,20 +608,28 @@ class AnalizadorSintactico:
             )
             self.size_list += 1
             self.elementos_r(actual)
+            actual = self.eliminar_primero()
             if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
                 self.lista_tokens.insert(0, actual)
                 return
 
             if actual.tipo == TipoToken.LLAVE_CERRADURA:
                 self.contador = 0
+                actual = self.eliminar_primero()
                 if arreglos is not None:
                     arreglos.append(actual.valor)
+                if actual.tipo == TipoToken.LLAVE_APERTURA:
+                    self.lista_tokens.insert(0, actual)
+                return
             else:
                 self.crear_error(
                     "Se esperaba un }",
                     actual.fila,
                     actual.columna,
                 )
+                # if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
+                #     self.lista_tokens.insert(0, actual)
+                #     return
                 self.elementos_r(actual)
             if (
                 len(self.lista_tokens) > 0
@@ -642,7 +642,6 @@ class AnalizadorSintactico:
             ):
                 return
             else:
-                # self.crear_error(actual)
                 if len(self.lista_tokens) > 0:
                     self.arreglos()
 
@@ -675,11 +674,9 @@ class AnalizadorSintactico:
                         actual.fila,
                         actual.columna - 1,
                     )
-                    size_temp = len(next(iter(self.diccionario.values())))
                     for key in self.claves:
                         if len(self.diccionario[key]) == self.size_list:
                             self.diccionario[key].pop()
-                        # self.diccionario[key].pop()
                     self.size_list -= 1
                 self.lista_tokens.insert(0, actual)
                 return
@@ -716,17 +713,21 @@ class AnalizadorSintactico:
                         actual.fila,
                         actual.columna - 1,
                     )
-                    size_temp = len(next(iter(self.diccionario.values())))
                     for key in self.claves:
                         if len(self.diccionario[key]) == self.size_list:
                             self.diccionario[key].pop()
-                        # self.diccionario[key].pop()
                     self.size_list -= 1
                 self.lista_tokens.insert(0, actual)
                 return
             else:
                 if len(self.lista_tokens) > 0:
-                    self.elementos_r()
+                    if len(self.lista_tokens) > 0 and self.lista_tokens[0].tipo in [
+                        TipoToken.COMA
+                    ]:
+                        actual = self.eliminar_primero()
+                        self.elementos_r(actual)
+                    else:
+                        self.elementos_r()
 
     def usar_operacion(self, tipo, valor1=None, valor2=None):
         if tipo == TipoToken.R_IMPRIMIR:

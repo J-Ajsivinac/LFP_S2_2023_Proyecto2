@@ -135,7 +135,6 @@ class Control:
             return
         largo = self.imprimir_encabezado()
         self.imprimir_cuerpo(largo)
-        # self.consola.insert("end", "╗" + "\n")
 
     def sumar(self, i_d):
         if not i_d in self.matriz or len(self.matriz) == 0:
@@ -156,8 +155,15 @@ class Control:
         if len(valores) == 0:
             self.consola.insert("end", "0 \n")
             return
-        maximo = max(valores)
-        self.consola.insert("end", str(maximo) + "\n")
+        try:
+            maximo = max(valores)
+            self.consola.insert("end", str(maximo) + "\n")
+        except Exception as _:
+            self.consola.insert(
+                "end",
+                "No se puede obtener el máximo, no todos los valores son números"
+                + "\n",
+            )
 
     def get_min(self, i_d):
         if not i_d in self.matriz or len(self.matriz) == 0:
@@ -167,8 +173,15 @@ class Control:
         if len(valores) == 0:
             self.consola.insert("end", "0 \n")
             return
-        minimo = min(valores)
-        self.consola.insert("end", str(minimo) + "\n")
+        try:
+            minimo = max(valores)
+            self.consola.insert("end", str(minimo) + "\n")
+        except Exception as _:
+            self.consola.insert(
+                "end",
+                "No se puede obtener el mínimo, no todos los valores son números"
+                + "\n",
+            )
 
     def exportar(self, nombre):
         if len(self.matriz) == 0:
