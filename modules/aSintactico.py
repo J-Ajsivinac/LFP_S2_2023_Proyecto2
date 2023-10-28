@@ -627,14 +627,16 @@ class AnalizadorSintactico:
                     actual.fila,
                     actual.columna,
                 )
-                # if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
-                #     self.lista_tokens.insert(0, actual)
-                #     return
-                self.elementos_r(actual)
+                if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
+                    self.lista_tokens.insert(0, actual)
+                    return
+                self.contador = 0
+                self.arreglos(actual)
             if (
                 len(self.lista_tokens) > 0
                 and self.lista_tokens[0].tipo == TipoToken.LLAVE_APERTURA
             ):
+                self.contador = 0
                 self.arreglos()
             elif (
                 len(self.lista_tokens) > 0
@@ -643,6 +645,7 @@ class AnalizadorSintactico:
                 return
             else:
                 if len(self.lista_tokens) > 0:
+                    self.contador = 0
                     self.arreglos()
 
     def elementos_r(self, actual=None, elementos_r: list = None):
@@ -665,8 +668,6 @@ class AnalizadorSintactico:
                 or actual.tipo in self.salidas_asig
                 or actual.tipo in self.reservadas
             ):
-                if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
-                    self.lista_tokens.insert(0, actual)
                 if self.contador < self.size:
                     faltantes = self.size - self.contador
                     self.crear_error(
