@@ -93,6 +93,7 @@ class Reporte:
                     <div class="contenido-error">
                         <table>
                             <tr>
+                                <th>Leido</th>
                                 <th>Descripción</th>
                                 <th>Fila</th>
                                 <th>Columna</th>
@@ -101,6 +102,7 @@ class Reporte:
         for error in e_sintacticos:
             html += f"""
                 <tr>
+                    <td>{error.leido}</td>
                     <td>{error.valor}</td>
                     <td>{error.fila}</td>
                     <td>{error.columna}</td>

@@ -59,10 +59,10 @@ class AnalizadorSintactico:
                 return ultimo
             return None
 
-    def crear_error(self, datos, fila, columna):
+    def crear_error(self, datos, fila, columna, leido):
         if datos is None:
             return
-        self.errores_s.append(Error("Error Sintáctico", datos, fila, columna))
+        self.errores_s.append(Error("Error Sintáctico", datos, fila, columna, leido))
 
     def parser(self):
         if len(self.lista_tokens) > 0:
@@ -131,17 +131,16 @@ class AnalizadorSintactico:
                     self.usar_operacion(actual_valor, resp)
             else:
                 self.crear_error(
-                    "Se esperaba un ; ",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un ; ", actual.fila, actual.columna, actual.valor
                 )
                 if len(self.lista_tokens) > 0:
                     self.lista_tokens.insert(0, actual)
         else:
             self.crear_error(
-                "Se esperaba una palabra reservada | clave | comentario | registro",
+                "Se esperaba una palabra reservada | clave  | registro",
                 actual.fila,
                 actual.columna,
+                actual.valor,
             )
 
     def otro_comando(self, inicio: list):
@@ -164,9 +163,7 @@ class AnalizadorSintactico:
             asignacion.append(declaracion_c)
         else:
             self.crear_error(
-                "Se esperaba un = ",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un = ", actual.fila, actual.columna, actual.valor
             )
             self.declaracion_c(actual=actual)
 
@@ -187,15 +184,11 @@ class AnalizadorSintactico:
                     declaracion_c.append(actual.valor)
             else:
                 self.crear_error(
-                    "Se esperaba un ]",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un ]", actual.fila, actual.columna, actual.valor
                 )
         else:
             self.crear_error(
-                "Se esperaba un [",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un [", actual.fila, actual.columna, actual.valor
             )
             self.elementos(actual)
 
@@ -213,6 +206,7 @@ class AnalizadorSintactico:
                     "La clave no puede ser vacia",
                     actual.fila,
                     actual.columna,
+                    actual.valor,
                 )
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.CORCHETE_CERRADURA or (
@@ -230,9 +224,7 @@ class AnalizadorSintactico:
                     elementos.append(elementos1)
             else:
                 self.crear_error(
-                    "Se esperaba una ,",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba una ,", actual.fila, actual.columna, actual.valor
                 )
                 if len(self.lista_tokens) > 0:
                     self.elementos(actual)
@@ -253,6 +245,7 @@ class AnalizadorSintactico:
                     "Se esperaba una cadena de texto",
                     actual.fila,
                     actual.columna,
+                    actual.valor,
                 )
                 self.elementos()
 
@@ -284,23 +277,17 @@ class AnalizadorSintactico:
                 instruccion.append(actual.valor)
             else:
                 self.crear_error(
-                    "Se esperaba un )",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un )", actual.fila, actual.columna, actual.valor
                 )
         else:
             self.crear_error(
-                "Se esperaba un (",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un (", actual.fila, actual.columna, actual.valor
             )
             if actual.tipo == TipoToken.PARENTESIS_CERRADURA:
                 pass
             else:
                 self.crear_error(
-                    "Se esperaba un )",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un )", actual.fila, actual.columna, actual.valor
                 )
         return "exito"
 
@@ -324,9 +311,7 @@ class AnalizadorSintactico:
                         instruccion.append(actual.valor)
                 else:
                     self.crear_error(
-                        "Se esperaba un )",
-                        actual.fila,
-                        actual.columna,
+                        "Se esperaba un )", actual.fila, actual.columna, actual.valor
                     )
             else:
                 fila = actual.fila if actual.fila == fila_comando else fila_comando
@@ -336,9 +321,7 @@ class AnalizadorSintactico:
                     else columna_comando + 1
                 )
                 self.crear_error(
-                    "Se esperaba una cadena de texto",
-                    fila,
-                    columna,
+                    "Se esperaba una cadena de texto", fila, columna, actual.valor
                 )
                 if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
                     self.lista_tokens.insert(0, actual)
@@ -350,15 +333,11 @@ class AnalizadorSintactico:
                     pass
                 else:
                     self.crear_error(
-                        "Se esperaba un )",
-                        actual.fila,
-                        actual.columna,
+                        "Se esperaba un )", actual.fila, actual.columna, actual.valor
                     )
         else:
             self.crear_error(
-                "Se esperaba un (",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un (", actual.fila, actual.columna, actual.valor
             )
             if actual.tipo == TipoToken.STRING:
                 actual = self.eliminar_primero()
@@ -366,9 +345,7 @@ class AnalizadorSintactico:
                     pass
                 else:
                     self.crear_error(
-                        "Se esperaba un )",
-                        actual.fila,
-                        actual.columna,
+                        "Se esperaba un )", actual.fila, actual.columna, actual.valor
                     )
             else:
                 if len(self.lista_tokens) == 0:
@@ -377,6 +354,7 @@ class AnalizadorSintactico:
                     "Se esperaba una cadena de texto",
                     actual.fila,
                     actual.columna,
+                    actual.valor,
                 )
                 actual = self.eliminar_primero()
                 if actual is None:
@@ -385,9 +363,7 @@ class AnalizadorSintactico:
                     pass
                 else:
                     self.crear_error(
-                        "Se esperaba un )",
-                        actual.fila,
-                        actual.columna,
+                        "Se esperaba un )", actual.fila, actual.columna, actual.valor
                     )
         return valor
 
@@ -400,9 +376,7 @@ class AnalizadorSintactico:
         parentesis = False
         if actual.tipo != TipoToken.PARENTESIS_APERTURA:
             self.crear_error(
-                "Se esperaba un (",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un (", actual.fila, actual.columna, actual.valor
             )
             parentesis = True
         else:
@@ -422,6 +396,7 @@ class AnalizadorSintactico:
                 "Se esperaba una cadena de texto",
                 actual.fila,
                 actual.columna,
+                actual.valor,
             )
             string = True
         if not string:
@@ -429,9 +404,7 @@ class AnalizadorSintactico:
         coma = False
         if actual.tipo != TipoToken.COMA:
             self.crear_error(
-                "Se esperaba una ,",
-                actual.fila,
-                actual.columna,
+                "Se esperaba una ,", actual.fila, actual.columna, actual.valor
             )
             coma = True
         else:
@@ -455,15 +428,14 @@ class AnalizadorSintactico:
                 "Se esperaba un entero | cadena de texto | decimal",
                 actual.fila,
                 actual.columna,
+                actual.valor,
             )
             entero = True
         if not entero:
             actual = self.eliminar_primero()
         if actual.tipo != TipoToken.PARENTESIS_CERRADURA:
             self.crear_error(
-                "Se esperaba un )",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un )", actual.fila, actual.columna, actual.valor
             )
         else:
             if instruccion is not None:
@@ -486,9 +458,7 @@ class AnalizadorSintactico:
                 asignacion.append(declaracion_r)
         else:
             self.crear_error(
-                "Se esperaba un =",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un =", actual.fila, actual.columna, actual.valor
             )
             self.declaracion_r(actual)
 
@@ -514,15 +484,11 @@ class AnalizadorSintactico:
                     declaracion_r.append(actual.valor)
             else:
                 self.crear_error(
-                    "Se esperaba un ]",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un ]", actual.fila, actual.columna, actual.valor
                 )
         else:
             self.crear_error(
-                "Se esperaba un [",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un [", actual.fila, actual.columna, actual.valor
             )
             self.arreglos()
             actual = self.eliminar_primero()
@@ -532,9 +498,7 @@ class AnalizadorSintactico:
                 pass
             else:
                 self.crear_error(
-                    "Se esperaba un }",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un }", actual.fila, actual.columna, actual.valor
                 )
 
     def arreglos(self, actual=None, arreglos: list = None):
@@ -545,9 +509,7 @@ class AnalizadorSintactico:
         if actual is None:
             actual = self.eliminar_primero()
             self.crear_error(
-                "Se esperaba un {",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un {", actual.fila, actual.columna, actual.valor
             )
             return
 
@@ -566,6 +528,7 @@ class AnalizadorSintactico:
                     "Se esperaba un }",
                     self.copia[-1].fila,
                     self.copia[-1].columna,
+                    actual.valor,
                 )
                 return
             if actual.tipo == TipoToken.LLAVE_CERRADURA:
@@ -574,9 +537,7 @@ class AnalizadorSintactico:
                     arreglos.append(actual.valor)
             else:
                 self.crear_error(
-                    "Se esperaba un }",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un }", actual.fila, actual.columna, actual.valor
                 )
                 if actual.tipo in self.reservadas or actual.tipo in self.reservadas:
                     self.lista_tokens.insert(0, actual)
@@ -602,9 +563,7 @@ class AnalizadorSintactico:
                     self.arreglos()
         else:
             self.crear_error(
-                "Se esperaba un {",
-                actual.fila,
-                actual.columna,
+                "Se esperaba un {", actual.fila, actual.columna, actual.valor
             )
             self.size_list += 1
             self.elementos_r(actual)
@@ -623,9 +582,7 @@ class AnalizadorSintactico:
                 return
             else:
                 self.crear_error(
-                    "Se esperaba un }",
-                    actual.fila,
-                    actual.columna,
+                    "Se esperaba un }", actual.fila, actual.columna, actual.valor
                 )
                 if actual.tipo in self.salidas_asig or actual.tipo in self.reservadas:
                     self.lista_tokens.insert(0, actual)
@@ -674,6 +631,7 @@ class AnalizadorSintactico:
                         f"Falta {faltantes} valores en el arreglo",
                         actual.fila,
                         actual.columna - 1,
+                        actual.valor,
                     )
                     for key in self.claves:
                         if len(self.diccionario[key]) == self.size_list:
@@ -690,7 +648,9 @@ class AnalizadorSintactico:
                 if elementos_r is not None:
                     elementos_r.append(elementos_r1)
             else:
-                self.crear_error("se esperaba una ,", actual.fila, actual.columna)
+                self.crear_error(
+                    "se esperaba una ,", actual.fila, actual.columna, actual.valor
+                )
                 self.elementos_r(actual)
 
         else:
@@ -698,6 +658,7 @@ class AnalizadorSintactico:
                 "Se esperaba un Entero | Decimal | Cadena de texto",
                 actual.fila,
                 actual.columna,
+                actual.valor,
             )
             if actual.tipo in [
                 TipoToken.LLAVE_APERTURA,
@@ -713,6 +674,7 @@ class AnalizadorSintactico:
                         f"Falta {faltantes} valores en el arreglo",
                         actual.fila,
                         actual.columna - 1,
+                        actual.valor,
                     )
                     for key in self.claves:
                         if len(self.diccionario[key]) == self.size_list:

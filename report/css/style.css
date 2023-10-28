@@ -109,7 +109,7 @@ main .contenedor .contenido-reporte table tr {
 }
 
 main .contenedor .contenido-error table tr th {
-    width: 33.33%;
+    width: 25%;
     text-align: start;
     font-size: 1.3rem;
     height: 45px;
