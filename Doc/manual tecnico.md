@@ -274,8 +274,14 @@ punto para indicar los decimales se retorna un valor entero
 <blockquote>
 
 **Estados**
+
 Para los estados del analizador se utilizaron las siguientes expresiones regulares.
 
+Donde: 
+L = [A-Za-z]
+D = [0-9]
+CE = [!$%&/()...] Sin inculir el salto de linea
+CE1 = [!$%&/()...]
 
 | Descripción               | Patrón                                 | Expresión Regular  | Nombre de Token                 |
 | :------------------------ | :------------------------------------- | :----------------- | :------------------------------ |
@@ -295,6 +301,7 @@ Para los estados del analizador se utilizaron las siguientes expresiones regular
 | Reservada min             | Palabra min                            | min                | TipoToken.R_MIN                 |
 | Reservada exportarReporte | Palabra exportarReporte                | exportarReporte    | TipoToken.R_EXPORTAR            |
 | Cadena de texto           | "secuencia de caracteres"              | "[L\|D\|CE]+"      | TipoToken.STRING                |
+| Secuencia de caracteres   | secuencia de caracteres                | [L\|D\|CE]         | TipoToken.TEXT                  |
 | Número entero             | secuencia de numeros                   | D+                 | TipoToken.ENTERO                |
 | Número real               | secuencia de numeros con punto decimal | D+(.D+)?           | TipoToken.REAL                  |
 | Parentesis de Apertura    | un caracter '('                        | (                  | TipoToken.PARENTESIS_APERTURA   |
@@ -307,7 +314,7 @@ Para los estados del analizador se utilizaron las siguientes expresiones regular
 | Llave de cerradura        | un caracter '}'                        | }                  | TipoToken.LLAVE_CERRADURA       |
 | comaa                     | un caracter ','                        | ,                  | TipoToken.COMA                  |
 
-ER: `#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | "["  | “  |  ","  |  "]"  |  Registros  |   "{"  |  "}"  |  [0-9]+  | [0-9]+.[0-9]+ |  imprimir |  imprimirln |  "("  |   ")"  |; |  datos  | conteo |  Promedio  | contarsi  |  sumar |  max  | min |  exportarReporte | "[L\|D\|CE]+" | "=" `
+ER: `#[L|D|CE]* | L(L|D|”_”|” “)*| “”” | Claves | "["  | “  |  ","  |  "]"  |  Registros  |   "{"  |  "}"  |  [0-9]+  | [0-9]+.[0-9]+ |  imprimir |  imprimirln |  "("  |   ")"  |; |  datos  | conteo |  Promedio  | contarsi  |  sumar |  max  | min |  exportarReporte | "[L\|D\|CE]+" | "=" |[L|D|CE]  `
 
 ### Método del árbol
 
@@ -412,6 +419,34 @@ TipoToken.R_EXPORTAR ( TipoToken.STRING ) |
 <ELEMENTO PARAMETRO> ::= TipoToken.STRING | TipoToken.ENTERO | TipoToken.REAL 
 
 ```
+
+Anteriormente se desarrollo las formas que tiene el sistema para poder leer el codigo, si algún caracter o sintaxis no viene correctamente, se procede a generar un error, los errores vienen de la siguiente manera
+
+**Tipos de errores**
+
+Los errores mostrados en los reportes se dividen en 2, errores léxicos y sintácticos, Los errores léxicos son caracteres que no esperaba el sistema, por lo que se muestra el caracter leido la fila y la columna donde se encuentra el caracter
+
+Para los errores sintácticos, se puede tener los siguientes errores:
+
+
+| Error                                                                   | Descripción                                                                                |
+| :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| Se esperaba una palabra reservada \| clave \| comentario\|  registro \| | Significa que se esperaba una de las siguientes palabras:                                  |
+| Se esperaba un Entero \| Decimal\|  Cadena de texto                     | Significa que esperaba un numero entero, un numero con decimal o una cadena entre comillas |
+| Se esperaba un ;                                                        | significa que falta un punto y coma                                                        |
+| Se esperaba un =                                                        | significa que falta un signo igual                                                         |
+| Se esperaba un ]                                                        | significa que falta un corchete de cerradura                                               |
+| Se esperaba un [                                                        | Lo que significa que falta un corchete de apertura                                         |
+| La clave no puede ser vacia                                             | Una clave no puede ser un valor vació                                                      |
+| Se esperaba una ,                                                       | Lo que significa que falta una coma                                                        |
+| Se esperaba una cadena de texto                                         | Significa que se esperaba una cadena entre comillas dobles                                 |
+| Se esperaba un )                                                        | Lo que significa que falta un paréntesis de cerradura                                      |
+| Se esperaba un (                                                        | Lo que significa que falta un paréntesis de apertura                                       |
+| Se esperaba un }                                                        | Significa que falta una llave de cerradura                                                 |
+| Se esperaba un {                                                        | Significa que falta una llave de apertura                                                  |
+| Falta n valores en el arreglo                                           | Significa que un registro no esta completo, lo que hace que no se registre                 |
+
+
 
 <h3>Clase Graph</h3>
 El constructor de esta clase recibe los datos a graficar, cuenta con dos métodos importantes los cuales son: graficar_AST, y generar

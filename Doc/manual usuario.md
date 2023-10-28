@@ -21,6 +21,7 @@
 - [⚡ Inicio Rápido](#-inicio-rápido)
 - [💻 Interfaz de Usuario y Funcionalidades](#-interfaz-de-usuario-y-funcionalidades)
   - [Parte superior](#parte-superior)
+  - [Tipos de errores](#tipos-de-errores)
   - [Parte inferior](#parte-inferior)
 
 
@@ -108,6 +109,31 @@ Dependiendo del tipo de reporte la información cambiará.
 El reporte del arbol se verá de la siguiente forma:
 
 ![Captura 6](https://i.imgur.com/felVhwb.png)
+
+### Tipos de errores
+Los errores mostrados en los reportes se dividen en 2, errores léxicos y sintácticos, Los errores léxicos son caracteres que no esperaba el sistema, por lo que se muestra el caracter leido la fila y la columna donde se encuentra el caracter
+
+Para los errores sintácticos, se puede tener los siguientes errores:
+
+
+| Error                                                                   | Descripción                                                                                |
+| :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| Se esperaba una palabra reservada \| clave \| comentario\|  registro \| | Significa que se esperaba una de las siguientes palabras:                                  |
+| Se esperaba un Entero \| Decimal\|  Cadena de texto                     | Significa que esperaba un numero entero, un numero con decimal o una cadena entre comillas |
+| Se esperaba un ;                                                        | significa que falta un punto y coma                                                        |
+| Se esperaba un =                                                        | significa que falta un signo igual                                                         |
+| Se esperaba un ]                                                        | significa que falta un corchete de cerradura                                               |
+| Se esperaba un [                                                        | Lo que significa que falta un corchete de apertura                                         |
+| La clave no puede ser vacia                                             | Una clave no puede ser un valor vació                                                      |
+| Se esperaba una ,                                                       | Lo que significa que falta una coma                                                        |
+| Se esperaba una cadena de texto                                         | Significa que se esperaba una cadena entre comillas dobles                                 |
+| Se esperaba un )                                                        | Lo que significa que falta un paréntesis de cerradura                                      |
+| Se esperaba un (                                                        | Lo que significa que falta un paréntesis de apertura                                       |
+| Se esperaba un }                                                        | Significa que falta una llave de cerradura                                                 |
+| Se esperaba un {                                                        | Significa que falta una llave de apertura                                                  |
+| Falta n valores en el arreglo                                           | Significa que un registro no esta completo, lo que hace que no se registre                 |
+
+
 
 ### Parte inferior
 La parte inferior esta dividida en 2 columnas, de la siguiente manera:
