@@ -619,8 +619,8 @@ class AnalizadorSintactico:
             actual = self.eliminar_primero()
         if actual.tipo in [TipoToken.STRING, TipoToken.ENTERO, TipoToken.REAL]:
             valor = actual.valor
-            if actual.tipo in [TipoToken.STRING]:
-                valor = valor.replace('"', "")
+            # if actual.tipo in [TipoToken.STRING]:
+            #     valor = valor.replace('"', "")
             elemento_r = []
             if elementos_r is not None:
                 elementos_r.append("ELEMENTO_R")
