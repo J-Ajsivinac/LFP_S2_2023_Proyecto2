@@ -399,23 +399,25 @@ Está clase es la encargada de realizar el analisis sintactico, el analizador in
 <COMANDO> ::= <ASIGNACION> | INSTRUCCION ; | COMENTARIO
 <ASIGNACION> ::= TipoToken.R_CLAVES = <DECLARACION C> | REGISTROS = <DECLARACION R>
 <DECLARACION C> ::= [ <ELEMENTOS> ]
-<ELEMENTOS> ::= TipoToken.STRING, <ELEMENTOS> | TipoToken.STRING
-
+<ELEMENTOS> ::= <VALOR> , <ELEMENTOS> | <VALOR>
+<VALOR> := <TipoToken.String> | ε 
 <DECLARACION R> ::= [ <ARREGLOS> ]
 <ARREGLOS> ::= { <ELEMENTOS R> } <ARREGLOS> | { <ELEMENTOS R> }
-<ELEMENTOS R> ::= TipoToken.STRING | TipoToken.ENTERO | TipoToken.REAL | ε
+<ELEMENTOS_R> ::= <ELEMENTO_R> , <ELEMENTOS_R> | <ELEMENTO_R>
+<ELEMENTO_R> := TipoToken.STRING | TipoToken.ENTERO | TipoToken.REAL |  ε
 <INSTRUCCION> ::= 
-TipoToken.R_IMPRIMIR ( TipoToken.STRING ) |
-TipoToken.R_IMPRIMIRLN ( TipoToken.STRING ) |
+TipoToken.R_IMPRIMIR ( <A> ) |
+TipoToken.R_IMPRIMIRLN ( <A> ) |
 TipoToken.R_CONTEO ( ) |
-TipoToken.R_PROMEDIO ( TipoToken.STRING ) |
+TipoToken.R_PROMEDIO ( <A> ) |
 TipoToken.R_CONTARSI ( <PARAMETROS> ) |
 TipoToken.R_DATOS ( ) |
-TipoToken.R_SUMAR ( TipoToken.STRING ) |
-TipoToken.R_MAX ( TipoToken.STRING ) |
-TipoToken.R_MIN   ( TipoToken.STRING ) |
-TipoToken.R_EXPORTAR ( TipoToken.STRING ) |
-<PARAMETROS>::= TipoToken.STRING , <ELEMENTO PARAMETRO>
+TipoToken.R_SUMAR ( <A> ) |
+TipoToken.R_MAX ( <A> ) |
+TipoToken.R_MIN   ( <A> ) |
+TipoToken.R_EXPORTAR ( <A> ) |
+<A> := Tk.String
+<PARAMETROS>::= <A> , <ELEMENTO PARAMETRO>
 <ELEMENTO PARAMETRO> ::= TipoToken.STRING | TipoToken.ENTERO | TipoToken.REAL 
 
 ```

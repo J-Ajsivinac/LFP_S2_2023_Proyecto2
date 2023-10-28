@@ -67,14 +67,14 @@ class AnalizadorSintactico:
     def parser(self):
         if len(self.lista_tokens) > 0:
             inicio = []
-            self.datos_grafica.append("inicio")
+            self.datos_grafica.append("INICIO")
             self.inicio(inicio)
             self.datos_grafica.append(inicio)
 
     def inicio(self, inicio: list):
         if len(self.lista_tokens) == 0:
             return
-        inicio.append("comando")
+        inicio.append("COMANDO")
         comando = []
         self.comando(comando)
         inicio.append(comando)
@@ -88,7 +88,7 @@ class AnalizadorSintactico:
             comando.append(actual.valor)
             return
         if actual.tipo in [TipoToken.R_CLAVES]:
-            comando.append("asignacion")
+            comando.append("ASIGNACION")
             asignacion = []
             asignacion.append(actual.valor)
             self.asignacion(asignacion)
@@ -96,7 +96,7 @@ class AnalizadorSintactico:
             self.claves = list(self.diccionario.keys())
             self.size = len(self.claves)
         elif actual.tipo in [TipoToken.R_REGISTROS]:
-            comando.append("asignacion")
+            comando.append("ASIGNACION")
             asignacion = []
             asignacion.append(actual.valor)
             self.registros(asignacion)
@@ -113,7 +113,7 @@ class AnalizadorSintactico:
             TipoToken.R_SUMAR,
             TipoToken.R_PROMEDIO,
         ]:
-            comando.append("instruccion")
+            comando.append("INSTRUCCIÓN")
             instruccion = []
             instruccion.append(actual.valor)
             actual_valor = actual.tipo
@@ -145,9 +145,9 @@ class AnalizadorSintactico:
 
     def otro_comando(self, inicio: list):
         if len(self.lista_tokens) > 0:
-            inicio.append("otro comando")
+            inicio.append("OTRO COMANDO")
             otro_comando = []
-            otro_comando.append("inicio")
+            otro_comando.append("INICIO")
             inicio_2 = []
             self.inicio(inicio_2)
             otro_comando.append(inicio_2)
@@ -173,7 +173,7 @@ class AnalizadorSintactico:
         if actual.tipo == TipoToken.CORCHETE_APERTURA:
             if declaracion_c is not None:
                 declaracion_c.append(actual.valor)
-                declaracion_c.append("Elementos")
+                declaracion_c.append("ELEMENTOS")
             elementos = []
             self.elementos(elementos=elementos)
             if declaracion_c is not None:
@@ -197,7 +197,10 @@ class AnalizadorSintactico:
             actual = self.eliminar_primero()
         if actual.tipo == TipoToken.STRING:
             if elementos is not None:
-                elementos.append(actual.valor)
+                elementos.append("VALOR")
+                variable = []
+                variable.append(actual.valor)
+                elementos.append(variable)
             valor_key = actual.valor.replace('"', "")
             if len(valor_key.strip()) != 0:
                 self.diccionario[actual.valor] = []
@@ -217,7 +220,7 @@ class AnalizadorSintactico:
             if actual.tipo == TipoToken.COMA:
                 if elementos is not None:
                     elementos.append(actual.valor)
-                    elementos.append("Elementos")
+                    elementos.append("ELEMENTOS")
                 elementos1 = []
                 self.elementos(elementos=elementos1)
                 if elementos is not None:
@@ -301,8 +304,11 @@ class AnalizadorSintactico:
                 instruccion.append(actual.valor)
             actual = self.eliminar_primero()
             if actual.tipo == TipoToken.STRING:
+                a = []
                 if instruccion is not None:
-                    instruccion.append(actual.valor)
+                    instruccion.append("A")
+                    a.append(actual.valor)
+                    instruccion.append(a)
 
                 valor = actual.valor
                 actual = self.eliminar_primero()
@@ -382,14 +388,17 @@ class AnalizadorSintactico:
         else:
             if instruccion is not None:
                 instruccion.append(actual.valor)
-                instruccion.append("Parametros")
+                instruccion.append("PARAMETROS")
                 parametros = []
         if not parentesis:
             actual = self.eliminar_primero()
         string = False
         if actual.tipo == TipoToken.STRING:
             if parametros is not None:
-                parametros.append(actual.valor)
+                a = []
+                parametros.append("A")
+                a.append(actual.valor)
+                parametros.append(a)
             valor1 = actual.valor
         else:
             self.crear_error(
@@ -419,7 +428,7 @@ class AnalizadorSintactico:
             or actual.tipo == TipoToken.REAL
         ):
             if parametros is not None:
-                parametros.append("Elemento Parametro")
+                parametros.append("ELEMENTO PARAMETRO")
             elemento_parametro = []
             elemento_parametro.append(actual.valor)
             valor2 = actual.valor
@@ -451,7 +460,7 @@ class AnalizadorSintactico:
         if actual.tipo == TipoToken.IGUAL:
             if asignacion is not None:
                 asignacion.append(actual.valor)
-                asignacion.append("declaracion_r")
+                asignacion.append("DECLARACION_R")
             declaracion_r = []
             self.declaracion_r(declaracion_r=declaracion_r)
             if asignacion is not None:
@@ -468,7 +477,7 @@ class AnalizadorSintactico:
         if actual.tipo == TipoToken.CORCHETE_APERTURA:
             if declaracion_r is not None:
                 declaracion_r.append(actual.valor)
-                declaracion_r.append("arreglos")
+                declaracion_r.append("ARREGLOS")
             arreglos = []
             self.arreglos(arreglos=arreglos)
             if declaracion_r is not None:
@@ -517,7 +526,7 @@ class AnalizadorSintactico:
             self.size_list += 1
             if arreglos is not None:
                 arreglos.append(actual.valor)
-                arreglos.append("Elementos_r")
+                arreglos.append("ELEMENTOS_R")
             elementos_r = []
             self.elementos_r(elementos_r=elementos_r)
             if arreglos is not None:
@@ -548,7 +557,7 @@ class AnalizadorSintactico:
                 and self.lista_tokens[0].tipo == TipoToken.LLAVE_APERTURA
             ):
                 if arreglos is not None:
-                    arreglos.append("arreglos")
+                    arreglos.append("ARREGLOS")
                 arreglos1 = []
                 self.arreglos(arreglos=arreglos1)
                 if arreglos is not None:
@@ -612,8 +621,11 @@ class AnalizadorSintactico:
             valor = actual.valor
             if actual.tipo in [TipoToken.STRING]:
                 valor = valor.replace('"', "")
+            elemento_r = []
             if elementos_r is not None:
-                elementos_r.append(valor)
+                elementos_r.append("ELEMENTO_R")
+                elemento_r.append(valor)
+                elementos_r.append(elemento_r)
             if self.contador < self.size:
                 self.diccionario[self.claves[self.contador]].append(valor)
                 self.contador += 1
@@ -642,7 +654,7 @@ class AnalizadorSintactico:
             if actual.tipo == TipoToken.COMA:
                 if elementos_r is not None:
                     elementos_r.append(actual.valor)
-                    elementos_r.append("Elementos_r")
+                    elementos_r.append("ELEMENTOS_R")
                 elementos_r1 = []
                 self.elementos_r(elementos_r=elementos_r1)
                 if elementos_r is not None:
