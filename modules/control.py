@@ -174,7 +174,7 @@ class Control:
             self.consola.insert("end", "0 \n")
             return
         try:
-            minimo = max(valores)
+            minimo = min(valores)
             self.consola.insert("end", str(minimo) + "\n")
         except Exception as _:
             self.consola.insert(
