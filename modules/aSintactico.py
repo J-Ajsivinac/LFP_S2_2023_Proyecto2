@@ -74,13 +74,15 @@ class AnalizadorSintactico:
     def inicio(self, inicio: list):
         if len(self.lista_tokens) == 0:
             return
-        inicio.append("COMANDO")
-        comando = []
-        self.comando(comando)
-        inicio.append(comando)
-        if len(self.lista_tokens) == 0:
-            return
-        self.otro_comando(inicio)
+
+        while len(self.lista_tokens) != 0:
+            inicio.append("COMANDO")
+            comando = []
+            self.comando(comando)
+            inicio.append(comando)
+            if len(self.lista_tokens) == 0:
+                break
+        # self.otro_comando(inicio)
 
     def comando(self, comando: list):
         actual = self.eliminar_primero()

@@ -62,7 +62,7 @@ class AnalizadorLexico:
             puntero += 1
             if char == "\t":
                 self.columna += 4
-                cadena = cadena[4:]
+                cadena = cadena[1:]
                 puntero = 0
                 continue
             if char == "\n":

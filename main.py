@@ -11,6 +11,7 @@ from img.icons import Imagenes
 from PIL import Image, ImageTk
 import os
 import copy
+import sys
 from modules.reporte import Reporte
 
 
@@ -20,7 +21,7 @@ class App(tk.Tk):
         self.title("Ventana Principal")
         self.geometry("1100x668")
         self.resizable(0, 0)
-
+        sys.setrecursionlimit(1700)
         sv_ttk.set_theme("dark")
         self.style = ttk.Style()
         self.style.configure("TButton", font=("Montserrat SemiBold", 11), border=0)
