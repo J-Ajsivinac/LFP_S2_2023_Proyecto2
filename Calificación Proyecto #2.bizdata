@@ -1,0 +1,177 @@
+'''
+	# Inicio del Reporte
+	# Bueno pues, vamos a juzgar su proyecto >:)
+'''
+
+# Imprimir la sección de datos
+imprimir("/***** ***** ***** ");
+imprimir("Claves");
+imprimir(" ***** ***** *****\");
+imprimirln(" ");
+imprimirln(" ");
+
+# Claves de los registros
+Claves = [
+	"codigo", "producto", "precio_compra", 
+	"precio_venta", "stock"
+]
+
+# Imprimir la sección de registros
+imprimir("/***** ***** ***** ");
+imprimir("Registros");
+imprimir(" ***** ***** *****\");
+imprimirln(" ");
+imprimirln(" ");
+
+# Datos de ejemplo
+Registros = [
+	{1, "Barbacoa", 10.50, 20.00, 6}
+	{2, "Salsa", 13.00, 16.00, 7}
+	{3, "Mayonesa", 15.00, 18.00, 8}
+	{4, "Mostaza", 14.00, 16.00, 4}
+	{5, "Frijol", 10.50, 20.00, 1}
+	{6, "Azucar", 13.00, 16.00, 3}
+	{7, "Carton de Huevos", 15.00, 18.00, 2}
+	{8, "Sal en libra", 14.00, 16.00, 4}
+	{9, "Consome", 10.50, 20.00, 6}
+	{10, "Arroz", 13.00, 16.00, 0}
+	{11, "Cafe en sobre", 15.00, 18.00, 0}
+	{12, "1/2 litro de agua pura", 14.00, 16.00, 4}
+	# Continúa con más datos...
+	{13, "Pasta de Dientes", 5.50, 12.00, 5}
+    {14, "Shampoo", 8.00, 15.00, 3}
+    {15, "Jabón de Barra", 3.50, 6.00, 10}
+    {16, "Galletas", 2.00, 4.50, 15}
+    {17, "Pan Integral", 1.80, 3.20, 18}
+    {18, "Leche", 2.50, 4.50, 12}
+    {19, "Yogur", 2.80, 5.00, 8}
+    {20, "Manzanas", 0.80, 2.00, 20}
+    {21, "Plátanos", 0.60, 1.80, 22}
+    {22, "Papel Higiénico", 4.00, 7.50, 6}
+    {23, "Pañales", 9.00, 15.00, 4}
+    {24, "Cepillo de Dientes", 1.50, 3.00, 9}
+    {25, "Champú para Mascotas", 5.00, 9.00, 3}
+    {26, "Jabón de Lavandería", 2.50, 5.00, 7}
+    {27, "Acondicionador", 5.00, 9.00, 4}
+    {28, "Cerveza", 1.20, 2.50, 14}
+    {29, "Vino Tinto", 8.50, 15.00, 2}
+    {30, "Jugos Naturales", 3.00, 5.50, 10}
+    # Continúa con más datos...
+	{31, "Papel de Aluminio", 3.20, 6.50, 8}
+    {32, "Pan Blanco", 1.50, 2.80, 17}
+    {33, "Pollo", 6.00, 9.50, 5}
+    {34, "Carne Molida", 7.80, 12.00, 4}
+    {35, "Pavo Entero", 15.00, 25.00, 1}
+    {36, "Jamón", 5.00, 8.50, 7}
+    {37, "Queso Cheddar", 4.20, 7.50, 6}
+    {38, "Huevos", 1.80, 3.00, 12}
+    {39, "Mantequilla", 3.20, 5.50, 9}
+    {40, "Lechuga", 0.80, 1.50, 18}
+    {41, "Tomates", 0.90, 1.70, 20}
+    {42, "Cebollas", 0.60, 1.10, 22}
+    {43, "Pimientos", 1.10, 2.00, 15}
+    {44, "Aceite de Oliva", 2.50, 4.20, 10}
+    {45, "Arroz Integral", 2.00, 3.80, 13}
+    {46, "Fideos", 1.50, 2.80, 16}
+    {47, "Maíz en Lata", 1.80, 3.20, 14}
+    {48, "Papas Fritas", 1.20, 2.50, 19}
+    {49, "Pepinillos", 0.80, 1.40, 21}
+    {50, "Gaseosa", 2.00, 3.80, 11}
+    # Continúa con más datos...
+	# ... Datos anteriores
+    {51, "Té Verde", 3.50, 5.80, 25}
+    {52, "Café Molido", 4.50, 7.20, 30}
+    {53, "Yogur", 2.20, 3.80, 29}
+    {54, "Naranjas", 1.00, 1.60, 32}
+    {55, "Plátanos", 1.20, 2.20, 35}
+    {56, "Manzanas", 1.50, 2.80, 37}
+    {57, "Uvas", 2.80, 5.20, 24}
+    {58, "Pasta de Dientes", 2.80, 5.50, 27}
+    {59, "Cepillos de Dientes", 0.80, 1.50, 42}
+    {60, "Jabón de Baño", 1.50, 2.80, 49}
+    {61, "Shampoo", 3.20, 5.80, 18}
+    {62, "Acondicionador", 3.20, 5.80, 17}
+    {63, "Jabón de Lavandería", 1.80, 3.20, 23}
+    {64, "Suavizante de Ropa", 2.50, 4.20, 20}
+    {65, "Cuchillas de Afeitar", 1.80, 3.50, 21}
+    {66, "Desodorante", 2.50, 4.50, 22}
+    {67, "Pañuelos de Papel", 0.80, 1.50, 15}
+    {68, "Botanas", 1.50, 2.80, 38}
+    {69, "Refrescos", 1.20, 2.50, 31}
+    {70, "Sopa en Lata", 2.20, 4.00, 26}
+    # Continúa con más datos...
+	# ... Datos anteriores
+    {71, "Papel Higiénico", 1.20, 2.50, 34}
+    {72, "Detergente para Ropa", 3.00, 5.50, 28}
+    {73, "Lavaplatos", 2.80, 5.00, 29}
+    {74, "Aceite de Cocina", 3.50, 6.80, 36}
+    {75, "Mantequilla", 2.20, 4.50, 33}
+    {76, "Huevos (docena)", 1.80, 3.20, 30}
+    {77, "Leche", 1.50, 2.80, 39}
+    {78, "Pan Blanco", 2.00, 3.50, 44}
+    {79, "Queso Cheddar", 4.00, 7.80, 19}
+    {80, "Jamón", 3.00, 6.20, 21}
+    {81, "Pavo Rebanado", 3.50, 6.80, 18}
+    {82, "Tocino", 4.00, 7.50, 15}
+    {83, "Yogur de Fresa", 2.50, 4.20, 22}
+    {84, "Helado de Vainilla", 3.00, 5.50, 25}
+    {85, "Pizza Congelada", 3.50, 6.80, 20}
+    {86, "Refresco de Cola", 1.20, 2.50, 35}
+    {87, "Cerveza", 1.50, 2.80, 42}
+    {88, "Vino Tinto", 6.00, 12.50, 14}
+    {89, "Whisky", 10.00, 24.50, 9}
+    {90, "Cigarrillos", 4.50, 8.50, 8}
+    # Continúa con más datos...
+	{91, "Champú", 3.20, 6.50, 23}
+    {92, "Acondicionador", 3.00, 5.80, 27}
+    {93, "Jabón de Manos", 1.50, 3.00, 37}
+    {94, "Cepillo de Dientes", 0.80, 2.00, 43}
+    {95, "Pasta de Dientes", 1.20, 2.80, 41}
+    {96, "Pañales (paquete)", 5.00, 9.50, 11}
+    {97, "Toallitas Húmedas", 2.20, 4.50, 12}
+    {98, "Alimento para Perros", 4.50, 8.80, 10}
+    {99, "Alimento para Gatos", 4.80, 9.20, 6}
+    {100, "Lámpara LED", 6.00, 12.00, 7}
+]
+
+'''
+	Si les corrio, ya se fue el proyecto :D
+'''
+# Conteo
+imprimirln("/***** ***** ***** Conteo ***** ***** *****\");
+conteo();
+
+# Promedio
+imprimirln("/***** ***** ***** Promedio ***** ***** *****\");
+promedio("stock");
+
+# Contar si
+imprimirln("/***** ***** ***** Contar si ***** ***** *****\");
+contarsi("stock", 0);
+contarsi("stock", 1);
+contarsi("stock", 2);
+
+# Datos
+imprimirln("/***** ***** ***** Datos ***** ***** *****\");
+datos();
+
+# Sumar
+imprimirln("/***** ***** ***** Sumar ***** ***** *****\");
+sumar("stock");
+
+# Max
+imprimirln("/***** ***** ***** Maximo ***** ***** *****\");
+max("precio_venta");
+
+# Min
+imprimirln("/***** ***** ***** Minimo ***** ***** *****\");
+min("precio_compra");
+
+# Exportar reporte
+imprimirln("/***** ***** ***** Exportando Reporte ***** ***** *****\");
+exportarReporte("Reporte HTML de abarrotería");
+
+'''
+	# Fin del Reporte
+	# Si llegó hasta si salió su proyecto
+'''
